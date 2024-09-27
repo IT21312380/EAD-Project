@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EliteWear")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0689509aad1a1df80047c6fa04fcf6b9aecef907")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+27ce67d6b82e8f8f60fee014663620fd9ee1fbfe")]
 [assembly: System.Reflection.AssemblyProductAttribute("EliteWear")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EliteWear")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
