@@ -24,6 +24,7 @@ namespace EliteWear.Services
 
         public async Task CreateProductAsync(Product product)
         {
+            // No need to set Id here, it is handled in the Product constructor
             await _context.Products.InsertOneAsync(product);
         }
 
