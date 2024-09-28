@@ -11,10 +11,18 @@ namespace EliteWear.Models
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        public Collection<Items>? Items { get; set; }      
-        public string? TotalPrice { get; set; }
+        public List<Items>? Items { get; set; }      
+        public double TotalPrice { get; set; }
         public string? Status { get; set; }
 
 
     }
+
+    public class Items
+    {
+        public int Id { get; set; }
+        public string? Name { get; set; }
+        public double Price { get; set; }
+    }
+
 }

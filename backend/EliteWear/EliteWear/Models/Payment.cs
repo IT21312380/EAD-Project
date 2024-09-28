@@ -1,5 +1,8 @@
-﻿namespace EliteWear.Models
+﻿using MongoDB.EntityFrameworkCore;
+
+namespace EliteWear.Models
 {
+    [Collection("Payments")]
     public class Payment
     {
         public int Id { get; set; } 

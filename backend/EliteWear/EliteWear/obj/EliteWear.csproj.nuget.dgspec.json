@@ -40,6 +40,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "MongoDB.Driver": {
+              "target": "Package",
+              "version": "[2.29.0, )"
+            },
             "MongoDB.EntityFrameworkCore": {
               "target": "Package",
               "version": "[8.1.1, )"
