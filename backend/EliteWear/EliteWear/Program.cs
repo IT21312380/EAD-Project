@@ -1,10 +1,20 @@
 using EliteWear.Data;
 using EliteWear.Services;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:3000") // Replace with your React app's URL
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+});
 
 builder.Services.AddControllers();
 
@@ -30,6 +40,10 @@ builder.Services.AddScoped<CSRService>();
 builder.Services.AddControllers();
 
 var app = builder.Build();
+app.UseStaticFiles();
+
+
+app.UseCors("AllowReactApp");
 
 
 
