@@ -2,15 +2,18 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const CreateProduct = () => {
-  // State to hold form data
+  // State to hold form data and image
   const [product, setProduct] = useState({
+    id: "",
     name: "",
     description: "",
     price: "",
     category: "",
     quantity: "",
     vendorId: "",
+    imageUrl: "", // This will hold the image URL after upload
   });
+  const [image, setImage] = useState(null);
 
   // Handle input changes
   const handleChange = (e) => {
@@ -21,30 +24,59 @@ const CreateProduct = () => {
     });
   };
 
+  // Handle image file selection
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
+  };
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      // Send POST request to your API
+      let imageUrl = "";
+
+      // If an image is selected, upload it first
+      if (image) {
+        const formData = new FormData();
+        formData.append("file", image);
+
+        const uploadResponse = await axios.post(
+          "https://localhost:7164/api/product/upload-image",
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+
+        imageUrl = uploadResponse.data.imageUrl;
+      }
+
+      // Send POST request to your API with product data and image URL
       const response = await axios.post("https://localhost:7164/api/product", {
-        // Sending data in expected format, assuming default Product ID type is ObjectId in string
+        id: product.id,
         name: product.name,
         description: product.description,
         price: parseFloat(product.price),
         category: product.category,
         quantity: parseInt(product.quantity),
         vendorId: parseInt(product.vendorId),
+        imageUrl: imageUrl, // Set the image URL
       });
+
       console.log(response.data);
       alert("Product created successfully!");
       setProduct({
+        id: "",
         name: "",
         description: "",
         price: "",
         category: "",
         quantity: "",
         vendorId: "",
+        imageUrl: "", // Reset the image URL
       });
+      setImage(null); // Clear the selected image
     } catch (error) {
       console.error("Error creating product:", error);
       alert("Failed to create product.");
@@ -55,6 +87,16 @@ const CreateProduct = () => {
     <div>
       <h2>Create Product</h2>
       <form onSubmit={handleSubmit}>
+        <div>
+          <label>Id</label>
+          <input
+            type="text"
+            name="id"
+            value={product.id}
+            onChange={handleChange}
+            required
+          />
+        </div>
         <div>
           <label>Name</label>
           <input
@@ -112,6 +154,10 @@ const CreateProduct = () => {
             onChange={handleChange}
             required
           />
+        </div>
+        <div>
+          <label>Upload Image</label>
+          <input type="file" onChange={handleImageChange} accept="image/*" />
         </div>
         <button type="submit">Create Product</button>
       </form>

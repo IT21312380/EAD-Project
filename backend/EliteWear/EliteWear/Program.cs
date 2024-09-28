@@ -35,6 +35,8 @@ builder.Services.AddScoped<ProductService>();
 builder.Services.AddControllers();
 
 var app = builder.Build();
+app.UseStaticFiles();
+
 
 app.UseCors("AllowReactApp");
 
