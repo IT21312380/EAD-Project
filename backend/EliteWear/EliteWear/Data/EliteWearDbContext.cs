@@ -20,6 +20,12 @@ namespace EliteWear.Services
         public IMongoCollection<Product> Products => _database.GetCollection<Product>("Products");
         public IMongoCollection<Cart> Carts => _database.GetCollection<Cart>("Carts");
 
+        public IMongoCollection<User> Users => _database.GetCollection<User>("User");
+        public IMongoCollection<Admin> Admin => _database.GetCollection<Admin>("Admin");
+
+        public IMongoCollection<Vendor> Vendor => _database.GetCollection<Vendor>("Vendor");
+
+        public IMongoCollection<CSR> CSR => _database.GetCollection<CSR>("CSR");
     }
 
 }

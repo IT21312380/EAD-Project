@@ -32,9 +32,24 @@ public class ProductController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateProduct([FromBody] Product product)
     {
+        // Check if a product with the given Id already exists
+        var existingProduct = await _productService.GetProductByIdAsync(product.Id);
+        if (existingProduct != null)
+        {
+            return BadRequest("A product with this Id already exists.");
+        }
+
+        // Check if the product contains an image URL
+        if (string.IsNullOrEmpty(product.ImageUrl))
+        {
+            return BadRequest("Image URL is required.");
+        }
+
         await _productService.CreateProductAsync(product);
         return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
     }
+
+
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateProduct(int id, [FromBody] Product updatedProduct)
@@ -49,4 +64,27 @@ public class ProductController : ControllerBase
         await _productService.DeleteProductAsync(id);
         return NoContent();
     }
+
+    [HttpPost("upload-image")]
+    public async Task<IActionResult> UploadImage([FromForm] IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+            return BadRequest("No file uploaded.");
+
+        // Define your image storage path (this is just an example path)
+        var filePath = Path.Combine("wwwroot/images", file.FileName);
+
+        // Save the file to the specified path
+        using (var stream = new FileStream(filePath, FileMode.Create))
+        {
+            await file.CopyToAsync(stream);
+        }
+
+        // Assuming the server's base URL is https://localhost:7164/
+        var imageUrl = $"https://localhost:7164/images/{file.FileName}";
+
+        // Return the image URL
+        return Ok(new { imageUrl });
+    }
+
 }
