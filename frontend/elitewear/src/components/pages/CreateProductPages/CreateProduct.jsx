@@ -42,7 +42,7 @@ const CreateProduct = () => {
         formData.append("file", image);
 
         const uploadResponse = await axios.post(
-          "https://localhost:7164/api/product/upload-image",
+          "http://localhost:5133/api/product/upload-image",
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },
@@ -53,7 +53,7 @@ const CreateProduct = () => {
       }
 
       // Send POST request to your API with product data and image URL
-      const response = await axios.post("https://localhost:7164/api/product", {
+      const response = await axios.post("http://localhost:5133/api/product", {
         id: product.id,
         name: product.name,
         description: product.description,
