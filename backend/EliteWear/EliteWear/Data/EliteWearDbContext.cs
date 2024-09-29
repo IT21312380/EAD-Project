@@ -24,6 +24,8 @@ namespace EliteWear.Services
         public IMongoCollection<Vendor> Vendor => _database.GetCollection<Vendor>("Vendor");
 
         public IMongoCollection<CSR> CSR => _database.GetCollection<CSR>("CSR");
+
+        public IMongoCollection<Review> Reviews => _database.GetCollection<Review>("Reviews");
     }
    
 }
