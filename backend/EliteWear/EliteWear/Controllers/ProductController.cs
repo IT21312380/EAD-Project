@@ -80,8 +80,8 @@ public class ProductController : ControllerBase
             await file.CopyToAsync(stream);
         }
 
-        // Assuming the server's base URL is https://localhost:7164/
-        var imageUrl = $"https://localhost:7164/images/{file.FileName}";
+        // Assuming the server's base URL is http://localhost:5133/
+        var imageUrl = $"http://localhost:5133/images/{file.FileName}";
 
         // Return the image URL
         return Ok(new { imageUrl });
