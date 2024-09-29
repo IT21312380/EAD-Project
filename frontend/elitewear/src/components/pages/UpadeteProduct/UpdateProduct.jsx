@@ -19,7 +19,7 @@ const UpdateProduct = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `https://localhost:7164/api/product/${id}`
+          `http://localhost:5133/api/product/${id}`
         );
         setProduct(response.data); // Set the fetched product data
       } catch (err) {
@@ -39,7 +39,7 @@ const UpdateProduct = () => {
     e.preventDefault();
 
     try {
-      await axios.put(`https://localhost:7164/api/product/${id}`, product);
+      await axios.put(`http://localhost:5133/api/product/${id}`, product);
       alert("Product updated successfully.");
       navigate("/products"); // Redirect to the products page
     } catch (err) {
