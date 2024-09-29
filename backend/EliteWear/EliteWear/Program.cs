@@ -31,6 +31,7 @@ builder.Services.AddSingleton<EliteWearDbContext>();
 builder.Services.AddScoped<PaymentService>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<CartService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<AdminService>();
 builder.Services.AddScoped<VendorService>();
