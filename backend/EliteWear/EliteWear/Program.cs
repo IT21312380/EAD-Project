@@ -27,6 +27,7 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<AdminService>();
 builder.Services.AddScoped<VendorService>();
 builder.Services.AddScoped<CSRService>();
+builder.Services.AddScoped<ReviewService>();
 
 
 builder.Services.AddControllers();

@@ -32,6 +32,19 @@ namespace EliteWear.Services
             await _context.Orders.ReplaceOneAsync(order => order.Id == id, updatedOrder);
         }
 
+        public async Task UpdateOrderStatusAsync(int id, string newStatus)
+        {
+            var filter = Builders<Order>.Filter.Eq(order => order.Id, id);
+            var update = Builders<Order>.Update.Set(order => order.Status, newStatus);
+
+            var result = await _context.Orders.UpdateOneAsync(filter, update);
+            if (result.ModifiedCount == 0)
+            {
+                throw new Exception($"Order with ID {id} not found or status unchanged.");
+            }
+        }
+
+
         public async Task DeleteOrderAsync(int id)
         {
             await _context.Orders.DeleteOneAsync(order => order.Id == id);
