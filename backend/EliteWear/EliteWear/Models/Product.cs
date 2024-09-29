@@ -21,10 +21,11 @@ namespace EliteWear.Models
         public int Quantity { get; set; }
 
         public int VendorId { get; set; }
+        public string? ImageUrl { get; set; }
 
         public Product()
         {
-            Id = GetNextId();
+            //Id = GetNextId();
         }
 
         // Method to get the next ID
