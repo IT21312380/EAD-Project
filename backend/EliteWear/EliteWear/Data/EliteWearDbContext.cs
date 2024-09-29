@@ -18,6 +18,8 @@ namespace EliteWear.Services
         public IMongoCollection<Payment> Payments => _database.GetCollection<Payment>("Payments");
         public IMongoCollection<Order> Orders => _database.GetCollection<Order>("Orders");
         public IMongoCollection<Product> Products => _database.GetCollection<Product>("Products");
+        public IMongoCollection<Cart> Carts => _database.GetCollection<Cart>("Carts");
+
         public IMongoCollection<User> Users => _database.GetCollection<User>("User");
         public IMongoCollection<Admin> Admin => _database.GetCollection<Admin>("Admin");
 
@@ -27,7 +29,7 @@ namespace EliteWear.Services
 
         public IMongoCollection<Review> Reviews => _database.GetCollection<Review>("Reviews");
     }
-   
+
 }
 namespace EliteWear.Data
 {
