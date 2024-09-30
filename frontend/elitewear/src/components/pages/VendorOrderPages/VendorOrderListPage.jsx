@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import SearchAndFilter from "../../common/searchAndFilter/SearchAndFilter";
 
-const OrderListPage = () => {
+const VendorOrderListPage = () => {
   const [orders, setOrders] = useState([]); // State to hold orders
   const [loading, setLoading] = useState(true); // State to handle loading status
   const [error, setError] = useState(null); // State to handle error
@@ -86,20 +86,17 @@ const OrderListPage = () => {
   const updateOrderStatus = async (orderId) => {
     try {
       const status = selectedStatus[orderId];
-      if (status) {
-        await axios.put(
-          `https://localhost:7164/api/order/${orderId}/status`,
-          { status }, // Send an object containing the status
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        alert(`Order ${orderId} status updated to ${status}`);
-      } else {
-        alert("Please select a status to update.");
-      }
+      console.log(orderId);
+      const id = orderId;
+      await axios.put(
+        `http://localhost:5133/api/order/${id}/status`,
+        status, // Directly passing the status string, not wrapped in an object
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
     } catch (err) {
       console.error("Failed to update order status:", err);
     }
@@ -179,4 +176,4 @@ const OrderListPage = () => {
   );
 };
 
-export default OrderListPage;
+export default VendorOrderListPage;
