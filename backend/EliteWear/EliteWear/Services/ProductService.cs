@@ -37,5 +37,19 @@ namespace EliteWear.Services
         {
             await _context.Products.DeleteOneAsync(product => product.Id == id);
         }
+
+        public async Task DeductProductQuantityAsync(int productId, int quantityToDeduct)
+        {
+            var filter = Builders<Product>.Filter.Eq(product => product.Id, productId);
+            var update = Builders<Product>.Update.Inc(product => product.Quantity, -quantityToDeduct); // Deduct the quantity
+
+            var result = await _context.Products.UpdateOneAsync(filter, update);
+
+            if (result.ModifiedCount == 0)
+            {
+                throw new Exception($"Product with ID {productId} not found or quantity unchanged.");
+            }
+        }
+
     }
 }
