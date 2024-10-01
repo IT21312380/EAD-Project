@@ -22,8 +22,19 @@ namespace EliteWear.Services
             return await _context.Orders.Find(order => order.Id == id).FirstOrDefaultAsync();
         }
 
+        public async Task<int> GetNextOrderIdAsync()
+        {
+            var lastOrder = await _context.Orders.Find(order => true)
+                .Sort(Builders<Order>.Sort.Descending(o => o.Id))
+                .Limit(1)
+                .FirstOrDefaultAsync();
+
+            return lastOrder?.Id + 1 ?? 1; // If no orders exist, start at 1
+        }
+
         public async Task CreateOrderAsync(Order order)
         {
+            order.Id = await GetNextOrderIdAsync(); // Set the auto-incrementing ID
             await _context.Orders.InsertOneAsync(order);
         }
 
