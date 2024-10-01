@@ -6,6 +6,7 @@ import Products from "./components/pages/ProductsPages/Products";
 import UpdateProduct from "./components/pages/UpdateProduct/UpdateProduct";
 import VendorOrderListPage from "./components/pages/VendorOrderPages/VendorOrderListPage";
 import CSROrderList from "./components/pages/CSROrderPages/CSROrderList";
+import CSRNotificationList from "./components/pages/CSRNotificationPages/CSRNotificationList";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/products" element={<Products />} />
         <Route path="/ven-orders" element={<VendorOrderListPage />} />
         <Route path="/csr-orders" element={<CSROrderList />} />
+        <Route path="/csr-notifications" element={<CSRNotificationList />} />
       </Routes>
     </Router>
   );
