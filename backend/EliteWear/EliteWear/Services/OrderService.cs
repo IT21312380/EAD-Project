@@ -6,10 +6,12 @@ namespace EliteWear.Services
     public class OrderService
     {
         private readonly EliteWearDbContext _context;
+        private readonly ProductService _productService;
 
-        public OrderService(EliteWearDbContext context)
+        public OrderService(EliteWearDbContext context, ProductService productService)
         {
             _context = context;
+            _productService = productService;
         }
 
         public async Task<List<Order>> GetOrdersAsync()
@@ -34,9 +36,15 @@ namespace EliteWear.Services
 
         public async Task CreateOrderAsync(Order order)
         {
+
             order.Id = await GetNextOrderIdAsync(); // Set the auto-incrementing ID
+
             await _context.Orders.InsertOneAsync(order);
+
+      
+ 
         }
+
 
         public async Task UpdateOrderAsync(int id, Order updatedOrder)
         {
