@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import SearchAndFilter from "../../common/searchAndFilter/SearchAndFilter";
+import { v4 as uuidv4 } from "uuid"; // Import UUID for unique ID generation
 
 const CSROrderList = () => {
   const [orders, setOrders] = useState([]); // State to hold orders
@@ -54,19 +55,46 @@ const CSROrderList = () => {
   const updateOrderStatus = async (orderId) => {
     try {
       const status = selectedStatus[orderId];
-      console.log(orderId);
       const id = orderId;
-      await axios.put(
-        `http://localhost:5133/api/order/${id}/status`,
-        status, // Directly passing the status string, not wrapped in an object
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      await axios.put(`http://localhost:5133/api/order/${id}/status`, status, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      console.log("Updated status to:", status); // Log the updated status
+      // Check if the status is "Canceled"
+      if (status === "Canceled") {
+        console.log("hit1");
+        const order = orders.find((order) => order.id === orderId);
+        console.log(order, order.userId);
+        var customerId = order.userId;
+        const notificationDto = {
+          id: 3, // Use uuid for unique ID
+          message: "Your order has been canceled successfully.",
+          notificationType: "Customer",
+        };
+        console.log(
+          "Preparing to send notification:",
+          customerId,
+          notificationDto
+        );
+        await sendCancellationNotification(customerId, notificationDto);
+      }
     } catch (err) {
       console.error("Failed to update order status:", err);
+    }
+  };
+
+  const sendCancellationNotification = async (customerId, notificationDto) => {
+    try {
+      console.log(customerId);
+      await axios.post(
+        `http://localhost:5133/api/Notification/csr?customerId=${customerId}`,
+        notificationDto
+      );
+    } catch (err) {
+      console.error("Failed to send notification:", err);
     }
   };
 
