@@ -24,30 +24,25 @@ namespace EliteWear.Services
             return await _context.Orders.Find(order => order.Id == id).FirstOrDefaultAsync();
         }
 
+        public async Task<int> GetNextOrderIdAsync()
+        {
+            var lastOrder = await _context.Orders.Find(order => true)
+                .Sort(Builders<Order>.Sort.Descending(o => o.Id))
+                .Limit(1)
+                .FirstOrDefaultAsync();
+
+            return lastOrder?.Id + 1 ?? 1; // If no orders exist, start at 1
+        }
+
         public async Task CreateOrderAsync(Order order)
         {
-            foreach (var item in order.Items)
-            {
-                var product = await _productService.GetProductByIdAsync(item.Id);
-                if (product == null)
-                {
-                    throw new Exception($"Product with ID {item.Id} not found.");
-                }
 
-                if (product.Quantity < item.Qty)
-                {
-                    throw new Exception($"Not enough stock for product {product.Name}. Available: {product.Quantity}, requested: {item.Qty}");
-                }
-            }
+            order.Id = await GetNextOrderIdAsync(); // Set the auto-incrementing ID
 
-            // If stock is valid, insert the new order into the database
             await _context.Orders.InsertOneAsync(order);
 
-            // Deduct the quantity for each item in the order
-            foreach (var item in order.Items)
-            {
-                await _productService.DeductProductQuantityAsync(item.Id, item.Qty);
-            }
+      
+ 
         }
 
 
