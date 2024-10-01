@@ -36,5 +36,33 @@ namespace EliteWear.Services
         {
             await _context.Carts.DeleteOneAsync(cart => cart.Id == id);
         }
+        public async Task<bool> RemoveCartItemAsync(int cartId, int cartItemId)
+        {
+            // Find the cart by its ID
+            var cart = await _context.Carts.Find(c => c.Id == cartId).FirstOrDefaultAsync();
+            if (cart == null || cart.Items == null)
+            {
+                return false; // Cart or cart items not found
+            }
+
+            // Find the item to remove based on cartItemId
+            var cartItem = cart.Items.FirstOrDefault(item => item.Id == cartItemId);
+            if (cartItem == null)
+            {
+                return false; // Cart item not found
+            }
+
+            // Remove the item
+            cart.Items.Remove(cartItem);
+
+            // Recalculate the total price
+            cart.TotalPrice = cart.Items.Sum(item => item.Price * item.Quantity);
+
+            // Update the cart in the database
+            var result = await _context.Carts.ReplaceOneAsync(c => c.Id == cartId, cart);
+
+            return result.ModifiedCount > 0; // Return true if the update was successful
+        }
+
     }
 }
