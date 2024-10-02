@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import SearchAndFilter from "../../common/searchAndFilter/SearchAndFilter";
+import { v4 as uuidv4 } from "uuid"; // Import UUID for unique ID generation
 
-const OrderListPage = () => {
+const CSROrderList = () => {
   const [orders, setOrders] = useState([]); // State to hold orders
   const [loading, setLoading] = useState(true); // State to handle loading status
   const [error, setError] = useState(null); // State to handle error
   const [selectedStatus, setSelectedStatus] = useState({}); // State to track selected status for each order
-  const [itemUserMap, setItemUserMap] = useState({}); // State to hold user ID for each item
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
   const [selectedCategory, setSelectedCategory] = useState(""); // State for selected category
   const [categories, setCategories] = useState([]); // State to hold categories
@@ -33,39 +33,8 @@ const OrderListPage = () => {
     fetchOrders(); // Call the fetch function
   }, []); // Empty dependency array means this effect runs once on mount
 
-  useEffect(() => {
-    const fetchItemUserIds = async () => {
-      const userMap = {};
-      const itemIds = orders
-        .flatMap((order) => order.items?.map((item) => item.id))
-        .filter(Boolean);
-
-      for (const id of itemIds) {
-        try {
-          const response = await axios.get(
-            `http://localhost:5133/api/product/${id}`
-          );
-          userMap[id] = response.data.vendorId; // Assuming vendorId is the user ID
-        } catch (err) {
-          console.error(`Failed to fetch user ID for item ${id}:`, err);
-        }
-      }
-
-      setItemUserMap(userMap);
-    };
-
-    if (orders.length) {
-      fetchItemUserIds(); // Call function to fetch user IDs for items if orders are available
-    }
-  }, [orders]);
-
-  const currentUserId = "1234"; // Temporary user ID for testing
-
   // Filter orders based on search query and selected category
   const filteredOrders = orders.filter((order) => {
-    const matchesUserId = order.items?.some(
-      (item) => itemUserMap[item.id] === parseInt(currentUserId, 10)
-    );
     const matchesSearchQuery = order.items?.some((item) =>
       item.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -73,7 +42,7 @@ const OrderListPage = () => {
       ? order.items?.some((item) => item.category === selectedCategory)
       : true;
 
-    return matchesUserId && matchesSearchQuery && matchesCategory;
+    return matchesSearchQuery && matchesCategory;
   });
 
   const handleStatusChange = (orderId, newStatus) => {
@@ -86,22 +55,46 @@ const OrderListPage = () => {
   const updateOrderStatus = async (orderId) => {
     try {
       const status = selectedStatus[orderId];
-      if (status) {
-        await axios.put(
-          `https://localhost:7164/api/order/${orderId}/status`,
-          { status }, // Send an object containing the status
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
+      const id = orderId;
+      await axios.put(`http://localhost:5133/api/order/${id}/status`, status, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      console.log("Updated status to:", status); // Log the updated status
+      // Check if the status is "Canceled"
+      if (status === "Canceled") {
+        console.log("hit1");
+        const order = orders.find((order) => order.id === orderId);
+        console.log(order, order.userId);
+        var customerId = order.userId;
+        const notificationDto = {
+          id: 3, // Use uuid for unique ID
+          message: "Your order has been canceled successfully.",
+          notificationType: "Customer",
+        };
+        console.log(
+          "Preparing to send notification:",
+          customerId,
+          notificationDto
         );
-        alert(`Order ${orderId} status updated to ${status}`);
-      } else {
-        alert("Please select a status to update.");
+        await sendCancellationNotification(customerId, notificationDto);
       }
     } catch (err) {
       console.error("Failed to update order status:", err);
+    }
+  };
+
+  const sendCancellationNotification = async (customerId, notificationDto) => {
+    try {
+      console.log(customerId);
+      await axios.post(
+        `http://localhost:5133/api/Notification/csr?customerId=${customerId}`,
+        notificationDto
+      );
+    } catch (err) {
+      console.error("Failed to send notification:", err);
     }
   };
 
@@ -165,6 +158,7 @@ const OrderListPage = () => {
                     <option value="Packaging">Packaging</option>
                     <option value="Shipping">Shipping</option>
                     <option value="Delivered">Delivered</option>
+                    <option value="Canceled">Canceled</option>
                   </select>
                   <button onClick={() => updateOrderStatus(order.id)}>
                     Update
@@ -179,4 +173,4 @@ const OrderListPage = () => {
   );
 };
 
-export default OrderListPage;
+export default CSROrderList;
