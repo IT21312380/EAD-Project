@@ -16,7 +16,7 @@ public class UserController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterUserDto dto)
     {
-        if (!await _userService.RegisterUser(dto.Username, dto.Email, dto.Password))
+        if (!await _userService.RegisterUser(dto.Username, dto.Email, dto.Password, dto.State))
             return BadRequest("Username already exists.");
 
         return Ok("User registered successfully.");
@@ -29,7 +29,7 @@ public class UserController : ControllerBase
         if (user == null)
             return Unauthorized("Invalid email or password.");
 
-        return Ok("Login successful.");
+        return Ok(user);
     }
 
     [HttpPut("{id}")]
@@ -46,7 +46,41 @@ public class UserController : ControllerBase
         return NoContent();
     }
 
+    [HttpGet("{email}")]
+    public async Task<IActionResult> GetUser(string email)
+    {
+        var user = await _userService.GetUserByIdAsync(email);
+        if (user == null)
+            return NotFound();
+        return Ok(user);
+    }
 
+    [HttpGet]
+    public async Task<IActionResult> GetProducts()
+    {
+        var user = await _userService.GetUsersAsync();
+        return Ok(user);
+    }
+
+    [HttpPut("deactivate/{email}")]
+    public async Task<IActionResult> DeactivateUser(string email)
+    {
+        var result = await _userService.DeactivateUserAsync(email);
+        if (!result)
+            return NotFound("User not found or could not be deactivated.");
+
+        return Ok("User has been deactivated.");
+    }
+
+    [HttpPut("activate/{email}")]
+    public async Task<IActionResult> ActivateUser(string email)
+    {
+        var result = await _userService.ActivateUserAsync(email);
+        if (!result)
+            return NotFound("User not found or could not be activated.");
+
+        return Ok("User has been activated.");
+    }
 
 
 }
@@ -56,6 +90,8 @@ public class RegisterUserDto
     public string? Username { get; set; }
     public string? Email { get; set; }
     public string? Password { get; set; }
+
+    public string? State { get; set; }
 }
 
 public class LoginUserDto

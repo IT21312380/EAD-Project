@@ -41,8 +41,8 @@ namespace EliteWear.Services
 
             await _context.Orders.InsertOneAsync(order);
 
-      
- 
+
+
         }
 
 
@@ -62,6 +62,43 @@ namespace EliteWear.Services
                 throw new Exception($"Order with ID {id} not found or status unchanged.");
             }
         }
+
+
+        public async Task UpdateOrderItemStatusAsync(int orderId, int itemId, string newStatus)
+        {
+            // Filter to find the order with the given ID and the item with the given itemId
+            var filter = Builders<Order>.Filter.And(
+                Builders<Order>.Filter.Eq(order => order.Id, orderId),
+                Builders<Order>.Filter.ElemMatch(order => order.Items, item => item.Id == itemId)
+            );
+
+            // Update to set the new status for the specific item
+            var update = Builders<Order>.Update.Set("Items.$.Status", newStatus);
+
+            // Perform the update
+            var result = await _context.Orders.UpdateOneAsync(filter, update);
+
+            if (result.ModifiedCount == 0)
+            {
+                throw new Exception($"Order or item with ID {orderId} or item {itemId} not found, or status unchanged.");
+            }
+
+            // Check if all items in the order are delivered
+            var order = await _context.Orders.Find(o => o.Id == orderId).FirstOrDefaultAsync();
+            if (order != null && order.Items.All(item => item.Status == "Delivered"))
+            {
+                // Update the order status to 'Delivered'
+                var updateOrderStatus = Builders<Order>.Update.Set(o => o.Status, "Delivered");
+                await _context.Orders.UpdateOneAsync(o => o.Id == orderId, updateOrderStatus);
+            }
+            else if (order != null && order.Items.Any(item => item.Status == "Delivered"))
+            {
+                // Update the order status to 'Partially Delivered'
+                var updateOrderStatus = Builders<Order>.Update.Set(o => o.Status, "Partially Delivered");
+                await _context.Orders.UpdateOneAsync(o => o.Id == orderId, updateOrderStatus);
+            }
+        }
+
 
 
         public async Task DeleteOrderAsync(int id)
