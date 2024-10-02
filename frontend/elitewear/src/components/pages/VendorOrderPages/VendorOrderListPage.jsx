@@ -3,35 +3,34 @@ import axios from "axios";
 import SearchAndFilter from "../../common/searchAndFilter/SearchAndFilter";
 
 const VendorOrderListPage = () => {
-  const [orders, setOrders] = useState([]); // State to hold orders
-  const [loading, setLoading] = useState(true); // State to handle loading status
-  const [error, setError] = useState(null); // State to handle error
-  const [selectedStatus, setSelectedStatus] = useState({}); // State to track selected status for each order
-  const [itemUserMap, setItemUserMap] = useState({}); // State to hold user ID for each item
-  const [searchQuery, setSearchQuery] = useState(""); // State for search query
-  const [selectedCategory, setSelectedCategory] = useState(""); // State for selected category
-  const [categories, setCategories] = useState([]); // State to hold categories
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState({});
+  const [itemUserMap, setItemUserMap] = useState({});
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [categories, setCategories] = useState([]);
+
+  const currentUserId = "1234"; // This should ideally come from user authentication context
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const response = await axios.get("http://localhost:5133/api/order");
-        setOrders(response.data); // Update state with fetched orders
-
-        // Extract unique categories from orders or items (if applicable)
+        setOrders(response.data);
         const uniqueCategories = [
           ...new Set(response.data.map((order) => order.category)),
         ];
         setCategories(uniqueCategories);
       } catch (err) {
-        setError("Failed to fetch orders."); // Handle error
+        setError("Failed to fetch orders.");
       } finally {
-        setLoading(false); // Update loading state
+        setLoading(false);
       }
     };
-
-    fetchOrders(); // Call the fetch function
-  }, []); // Empty dependency array means this effect runs once on mount
+    fetchOrders();
+  }, []);
 
   useEffect(() => {
     const fetchItemUserIds = async () => {
@@ -45,69 +44,69 @@ const VendorOrderListPage = () => {
           const response = await axios.get(
             `http://localhost:5133/api/product/${id}`
           );
-          userMap[id] = response.data.vendorId; // Assuming vendorId is the user ID
+          userMap[id] = response.data.vendorId;
         } catch (err) {
           console.error(`Failed to fetch user ID for item ${id}:`, err);
         }
       }
-
       setItemUserMap(userMap);
     };
-
     if (orders.length) {
-      fetchItemUserIds(); // Call function to fetch user IDs for items if orders are available
+      fetchItemUserIds();
     }
   }, [orders]);
 
-  const currentUserId = "1234"; // Temporary user ID for testing
-
-  // Filter orders based on search query and selected category
   const filteredOrders = orders.filter((order) => {
-    const matchesUserId = order.items?.some(
-      (item) => itemUserMap[item.id] === parseInt(currentUserId, 10)
+    const itemsForCurrentUser = order.items?.filter(
+      (item) => itemUserMap[item.id] === parseInt(currentUserId)
     );
-    const matchesSearchQuery = order.items?.some((item) =>
-      item.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    const matchesCategory = selectedCategory
-      ? order.items?.some((item) => item.category === selectedCategory)
-      : true;
 
-    return matchesUserId && matchesSearchQuery && matchesCategory;
+    // Filter orders to include only those that have items for the current user
+    return itemsForCurrentUser.length > 0;
   });
 
-  const handleStatusChange = (orderId, newStatus) => {
+  const handleItemStatusChange = (itemId, newStatus) => {
     setSelectedStatus((prevStatus) => ({
       ...prevStatus,
-      [orderId]: newStatus,
+      [itemId]: newStatus,
     }));
   };
 
-  const updateOrderStatus = async (orderId) => {
+  const updateItemStatus = async (orderId, itemId) => {
     try {
-      const status = selectedStatus[orderId];
-      console.log(orderId);
-      const id = orderId;
+      const status = selectedStatus[itemId]; // Correctly fetch the new status
+
+      // Check if status is selected before updating
+      if (!status) {
+        alert("Please select a status before updating.");
+        return;
+      }
+
+      console.log(
+        `Updating status of item ${itemId} in order ${orderId} to ${status}`
+      );
       await axios.put(
-        `http://localhost:5133/api/order/${id}/status`,
-        status, // Directly passing the status string, not wrapped in an object
+        `http://localhost:5133/api/order/${orderId}/item/${itemId}`,
+        status,
         {
           headers: {
             "Content-Type": "application/json",
           },
         }
       );
+
+      alert("Item status updated successfully!");
     } catch (err) {
-      console.error("Failed to update order status:", err);
+      console.error("Failed to update item status:", err);
     }
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Display loading message while fetching
+    return <div>Loading...</div>;
   }
 
   if (error) {
-    return <div>{error}</div>; // Display error message if fetching fails
+    return <div>{error}</div>;
   }
 
   return (
@@ -131,44 +130,51 @@ const VendorOrderListPage = () => {
               <th>Items</th>
               <th>Total Price</th>
               <th>Status</th>
-              <th>Update Status</th>
             </tr>
           </thead>
           <tbody>
-            {filteredOrders.map((order) => (
-              <tr key={order.id}>
-                <td>{order.id}</td>
-                <td>{order.userId}</td>
-                <td>
-                  <ul>
-                    {order.items?.map((item) => (
-                      <li key={item.id}>
-                        {item.name} (Qty: {item.qty})
-                      </li>
-                    ))}
-                  </ul>
-                </td>
-                <td>${order.totalPrice.toFixed(2)}</td>
-                <td>{order.status}</td>
-                <td>
-                  <select
-                    value={selectedStatus[order.id] || ""}
-                    onChange={(e) =>
-                      handleStatusChange(order.id, e.target.value)
-                    }
-                  >
-                    <option value="">Select Status</option>
-                    <option value="Purchased">Purchased</option>
-                    <option value="Packaging">Packaging</option>
-                    <option value="Shipping">Shipping</option>
-                    <option value="Delivered">Delivered</option>
-                  </select>
-                  <button onClick={() => updateOrderStatus(order.id)}>
-                    Update
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {filteredOrders.map((order) => {
+              const itemsForCurrentUser = order.items.filter(
+                (item) => itemUserMap[item.id] === parseInt(currentUserId)
+              );
+
+              return (
+                <tr key={order.id}>
+                  <td>{order.id}</td>
+                  <td>{order.userId}</td>
+                  <td>
+                    <ul>
+                      {itemsForCurrentUser.map((item) => (
+                        <li key={item.id}>
+                          {item.name} (Qty: {item.qty}) -{" "}
+                          <strong>{item.status}</strong>
+                          <br />
+                          <select
+                            value={selectedStatus[(item.id, order)]}
+                            onChange={(e) =>
+                              handleItemStatusChange(item.id, e.target.value)
+                            }
+                          >
+                            <option value="">Select Status</option>
+                            <option value="Purchased">Purchased</option>
+                            <option value="Packaging">Packaging</option>
+                            <option value="Shipping">Shipping</option>
+                            <option value="Delivered">Delivered</option>
+                          </select>
+                          <button
+                            onClick={() => updateItemStatus(order.id, item.id)}
+                          >
+                            Update Item Status
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </td>
+                  <td>${order.totalPrice.toFixed(2)}</td>
+                  <td>{order.status}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       )}

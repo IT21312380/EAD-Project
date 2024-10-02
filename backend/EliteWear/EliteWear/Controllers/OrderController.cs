@@ -57,6 +57,20 @@ public class OrderController : ControllerBase
         }
     }
 
+    [HttpPut("{id}/item/{itemId}")]
+    public async Task<IActionResult> UpdateOrderItemStatus(int id, int itemId, [FromBody] string status)
+    {
+        try
+        {
+            await _orderService.UpdateOrderItemStatusAsync(id, itemId, status);
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Error updating order status: {ex.Message}");
+        }
+    }
+
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteOrder(int id)
