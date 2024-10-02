@@ -71,5 +71,9 @@ namespace EliteWear.Services
             await _context.Vendor.DeleteOneAsync(vendor => vendor.Id == id);
         }
 
+        public async Task<Vendor?> GetVendorByIdAsync(string id)
+        {
+            return await _context.Vendor.Find(user => user.Id == id).FirstOrDefaultAsync();
+        }
     }
 }
