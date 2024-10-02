@@ -5,16 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowReactApp",
-        builder =>
-        {
-            builder.WithOrigins("http://localhost:3000") // Replace with your React app's URL
-                   .AllowAnyHeader()
-                   .AllowAnyMethod();
-        });
-});
+
 
 builder.Services.AddControllers();
 
@@ -31,10 +22,13 @@ builder.Services.AddSingleton<EliteWearDbContext>();
 builder.Services.AddScoped<PaymentService>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<CartService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<AdminService>();
 builder.Services.AddScoped<VendorService>();
 builder.Services.AddScoped<CSRService>();
+builder.Services.AddScoped<ReviewService>();
+builder.Services.AddScoped<NotificationService>();
 
 
 builder.Services.AddControllers();
@@ -43,7 +37,7 @@ var app = builder.Build();
 app.UseStaticFiles();
 
 
-app.UseCors("AllowReactApp");
+app.UseCors(x=>x.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin=>true).AllowCredentials());
 
 
 

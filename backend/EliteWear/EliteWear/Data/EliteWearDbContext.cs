@@ -1,7 +1,7 @@
-﻿using MongoDB.Driver;
+﻿using EliteWear.Data;
 using EliteWear.Models;
 using Microsoft.Extensions.Options;
-using EliteWear.Data;
+using MongoDB.Driver;
 
 namespace EliteWear.Services
 {
@@ -18,14 +18,21 @@ namespace EliteWear.Services
         public IMongoCollection<Payment> Payments => _database.GetCollection<Payment>("Payments");
         public IMongoCollection<Order> Orders => _database.GetCollection<Order>("Orders");
         public IMongoCollection<Product> Products => _database.GetCollection<Product>("Products");
+        public IMongoCollection<Cart> Carts => _database.GetCollection<Cart>("Carts");
+
         public IMongoCollection<User> Users => _database.GetCollection<User>("User");
         public IMongoCollection<Admin> Admin => _database.GetCollection<Admin>("Admin");
 
         public IMongoCollection<Vendor> Vendor => _database.GetCollection<Vendor>("Vendor");
 
         public IMongoCollection<CSR> CSR => _database.GetCollection<CSR>("CSR");
+
+        public IMongoCollection<Review> Reviews => _database.GetCollection<Review>("Reviews");
+
+        public IMongoCollection<Notification> Notifications => _database.GetCollection<Notification>("Notifications");
+
     }
-   
+
 }
 namespace EliteWear.Data
 {
