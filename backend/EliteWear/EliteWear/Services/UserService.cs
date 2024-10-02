@@ -19,7 +19,7 @@ namespace EliteWear.Services
             _context = context;
         }
 
-        public async Task<bool> RegisterUser(string username, string email, string password)
+        public async Task<bool> RegisterUser(string username, string email, string password, string state)
         {
             var existingUser = await _context.Users.Find(u => u.Username == username).FirstOrDefaultAsync();
             if (existingUser != null)
@@ -29,7 +29,9 @@ namespace EliteWear.Services
             {
                 Username = username,
                 Email = email,
-                PasswordHash = HashPassword(password)
+                PasswordHash = HashPassword(password),
+                State = state
+
             };
 
             await _context.Users.InsertOneAsync(user);
@@ -71,5 +73,38 @@ namespace EliteWear.Services
             await _context.Users.DeleteOneAsync(user => user.Id == id);
         }
 
+        public async Task<User?> GetUserByIdAsync(string email)
+        {
+            return await _context.Users.Find(user => user.Email == email).FirstOrDefaultAsync();
+        }
+
+        public async Task<List<User>> GetUsersAsync()
+        {
+            return await _context.Users.Find(user => true).ToListAsync();
+        }
+
+        public async Task<bool> DeactivateUserAsync(string email)
+        {
+            var user = await _context.Users.Find(u => u.Email == email).FirstOrDefaultAsync();
+            if (user == null)
+                return false;
+
+            var update = Builders<User>.Update.Set(u => u.State, "Deactivated");
+            var result = await _context.Users.UpdateOneAsync(u => u.Email == email, update);
+
+            return result.ModifiedCount > 0;
+        }
+
+        public async Task<bool> ActivateUserAsync(string email)
+        {
+            var user = await _context.Users.Find(u => u.Email == email).FirstOrDefaultAsync();
+            if (user == null)
+                return false;
+
+            var update = Builders<User>.Update.Set(u => u.State, "Activated");
+            var result = await _context.Users.UpdateOneAsync(u => u.Email == email, update);
+
+            return result.ModifiedCount > 0;
+        }
     }
 }
