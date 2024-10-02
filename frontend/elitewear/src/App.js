@@ -15,7 +15,7 @@ function App() {
         <Route path="/add-product" element={<CreateProduct />} />
         <Route path="/update-product/:id" element={<UpdateProduct />} />
         <Route path="/products" element={<Products />} />
-        <Route path="/ven-orders" element={<VendorOrderListPage />} />
+        <Route path="/vendor-orders" element={<VendorOrderListPage />} />
         <Route path="/csr-orders" element={<CSROrderList />} />
         <Route path="/csr-notifications" element={<CSRNotificationList />} />
       </Routes>
