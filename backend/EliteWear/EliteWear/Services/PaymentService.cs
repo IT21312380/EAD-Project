@@ -12,6 +12,17 @@ namespace EliteWear.Services
             _context = context;
         }
 
+        // Get the next available payment ID based on the last record in the collection
+        public async Task<int> GetNextPaymentIdAsync()
+        {
+            var lastPayment = await _context.Payments.Find(payment => true)
+                .Sort(Builders<Payment>.Sort.Descending(p => p.Id))
+                .Limit(1)
+                .FirstOrDefaultAsync();
+
+            return lastPayment?.Id + 1 ?? 1; // Start with 1 if no payments exist
+        }
+
         public async Task<List<Payment>> GetPaymentsAsync()
         {
             return await _context.Payments.Find(payment => true).ToListAsync();
@@ -24,6 +35,8 @@ namespace EliteWear.Services
 
         public async Task CreatePaymentAsync(Payment payment)
         {
+            // Set the auto-incremented ID
+            payment.Id = await GetNextPaymentIdAsync();
             await _context.Payments.InsertOneAsync(payment);
         }
 
