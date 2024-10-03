@@ -17,9 +17,10 @@ public class VendorController : ControllerBase
     public async Task<IActionResult> Register([FromBody] RegisterVendorDto vdto)
     {
         if (!await _vendorService.RegisterVendor(vdto.Username, vdto.Email, vdto.Password))
-            return BadRequest("Username already exists.");
+            return BadRequest(new { error = "Username already exists." });
 
-        return Ok("User registered successfully.");
+        // Return a JSON object instead of a plain string
+        return Ok(new { message = "Admin registered successfully." });
     }
 
     [HttpPost("login")]
@@ -27,9 +28,10 @@ public class VendorController : ControllerBase
     {
         var vendor = await _vendorService.AuthenticateVendor(vdto.Email, vdto.Password);
         if (vendor == null)
-            return Unauthorized("Invalid username or password.");
+            return Unauthorized(new { error = "Invalid username or password." });
 
-        return Ok("Login successful.");
+        // Return a JSON object instead of a plain string
+        return Ok(new {vendor});
     }
 
     [HttpPut("{id}")]
@@ -46,6 +48,14 @@ public class VendorController : ControllerBase
         return NoContent();
     }
 
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetVendor(string id)
+    {
+        var vendor = await _vendorService.GetVendorByIdAsync(id);
+        if (vendor == null)
+            return NotFound();
+        return Ok(vendor);
+    }
 
 
 
@@ -67,5 +77,5 @@ public class LoginVendorDto
 public class UpdateVendorDto
 {
     public string? Email { get; set; }
-    public string? Password { get; set; }
+    public string? Username { get; set; }
 }

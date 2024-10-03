@@ -13,26 +13,29 @@ public class AdminController : ControllerBase
         _adminService = adminService;
     }
 
-    [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterAdminDto adto)
-    {
-        if (!await _adminService.RegisterAdmin(adto.Username, adto.Password))
-            return BadRequest("Username already exists.");
-
-        return Ok("Admin registered successfully.");
-    }
-
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginAdminDto adto)
     {
         var admin = await _adminService.AuthenticateAdmin(adto.Username, adto.Password);
         if (admin == null)
-            return Unauthorized("Invalid username or password.");
+            return Unauthorized(new { error = "Invalid username or password." });
 
-        return Ok("Login successful.");
+        // Return a JSON object instead of a plain string
+        return Ok(new { message = "Login successful.", admin });
     }
 
-   
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] RegisterAdminDto adto)
+    {
+        if (!await _adminService.RegisterAdmin(adto.Username, adto.Password))
+            return BadRequest(new { error = "Username already exists." });
+
+        // Return a JSON object instead of a plain string
+        return Ok(new { message = "Admin registered successfully." });
+    }
+
+
+
 
 
 

@@ -49,4 +49,16 @@ public class CartController : ControllerBase
         await _cartService.DeleteCartAsync(id);
         return NoContent();
     }
+    [HttpDelete("{cartId}/items/{cartItemId}")]
+    public async Task<IActionResult> DeleteCartItem(int cartId, int cartItemId)
+    {
+        var success = await _cartService.RemoveCartItemAsync(cartId, cartItemId);
+
+        if (!success)
+        {
+            return NotFound(); // Return 404 if the cart or item was not found
+        }
+
+        return NoContent(); // Return 204 No Content if the item was successfully deleted
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using EliteWear.Models;
 using EliteWear.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Numerics;
 
 [ApiController]
 [Route("api/csr")]
@@ -17,9 +18,10 @@ public class CSRController : ControllerBase
     public async Task<IActionResult> Register([FromBody] RegisterCSRDto cdto)
     {
         if (!await _csrService.RegisterCSR(cdto.Username, cdto.Password))
-            return BadRequest("Username already exists.");
+            return BadRequest(new { error = "Username already exists." });
 
-        return Ok("CSR registered successfully.");
+        // Return a JSON object instead of a plain string
+        return Ok(new { message = "Admin registered successfully." });
     }
 
     [HttpPost("login")]
@@ -27,9 +29,10 @@ public class CSRController : ControllerBase
     {
         var csr = await _csrService.AuthenticateCSR(cdto.Username, cdto.Password);
         if (csr == null)
-            return Unauthorized("Invalid username or password.");
+            return Unauthorized(new { error = "Invalid username or password." });
 
-        return Ok("Login successful.");
+        // Return a JSON object instead of a plain string
+        return Ok(new { message = "Login successful.", csr });
     }
 
 

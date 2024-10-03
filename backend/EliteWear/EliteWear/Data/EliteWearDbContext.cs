@@ -1,7 +1,7 @@
-﻿using MongoDB.Driver;
+﻿using EliteWear.Data;
 using EliteWear.Models;
 using Microsoft.Extensions.Options;
-using EliteWear.Data;
+using MongoDB.Driver;
 
 namespace EliteWear.Services
 {
@@ -28,6 +28,9 @@ namespace EliteWear.Services
         public IMongoCollection<CSR> CSR => _database.GetCollection<CSR>("CSR");
 
         public IMongoCollection<Review> Reviews => _database.GetCollection<Review>("Reviews");
+
+        public IMongoCollection<Notification> Notifications => _database.GetCollection<Notification>("Notifications");
+
     }
 
 }
