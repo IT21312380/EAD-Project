@@ -5,10 +5,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import CreateProduct from "./components/pages/CreateProductPages/CreateProduct";
 import Products from "./components/pages/ProductsPages/Products";
 
-import VendorLogin from "./components/pages/VendorLoginPages/VendorLogin"
-import AdminLogin from "./components/pages/AdminLoginPages/AdminLogin"
-import CSRLogin from "./components/pages/CSRloginPages/CSRLogin"
-import VendorProfile from "./components/pages/VendorProfilePages/VendorProfilePage"
+import VendorLogin from "./components/pages/VendorLoginPages/VendorLogin";
+import AdminLogin from "./components/pages/AdminLoginPages/AdminLogin";
+import CSRLogin from "./components/pages/CSRloginPages/CSRLogin";
+import VendorProfile from "./components/pages/VendorProfilePages/VendorProfilePage";
 import RegisterVendor from "./components/pages/RegisterVendorPages/RegisterVendor";
 import AllUsers from "./components/pages/AllUsersPages/AllUsers";
 import UpdateVendorProfile from "./components/pages/VendorUpdatePages/VendorUpdatePage";
@@ -17,6 +17,7 @@ import UpdateProduct from "./components/pages/UpdateProduct/UpdateProduct";
 import VendorOrderListPage from "./components/pages/VendorOrderPages/VendorOrderListPage";
 import CSROrderList from "./components/pages/CSROrderPages/CSROrderList";
 import CSRNotificationList from "./components/pages/CSRNotificationPages/CSRNotificationList";
+import VendorNotifications from "./components/pages/VendorNotificationsPages/VendorNotifications";
 
 function App() {
   const { user } = useAuthContext();
@@ -37,9 +38,9 @@ function App() {
         <Route path="/update-product/:id" element={<UpdateProduct />} />
         <Route path="/products" element={<Products />} />
         <Route path="/vendor-orders" element={<VendorOrderListPage />} />
+        <Route path="/vendor-notifications" element={<VendorNotifications />} />
         <Route path="/csr-orders" element={<CSROrderList />} />
         <Route path="/csr-notifications" element={<CSRNotificationList />} />
-
       </Routes>
     </Router>
   );

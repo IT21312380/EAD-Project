@@ -6,10 +6,11 @@ namespace EliteWear.Services
     public class ProductService
     {
         private readonly EliteWearDbContext _context;
-
-        public ProductService(EliteWearDbContext context)
+        private readonly NotificationService _notificationService;
+        public ProductService(EliteWearDbContext context, NotificationService notificationService)
         {
             _context = context;
+            _notificationService = notificationService;
         }
 
         public async Task<List<Product>> GetProductsAsync()
@@ -43,11 +44,19 @@ namespace EliteWear.Services
             var filter = Builders<Product>.Filter.Eq(product => product.Id, productId);
             var update = Builders<Product>.Update.Inc(product => product.Quantity, -quantityToDeduct); // Deduct the quantity
 
-            var result = await _context.Products.UpdateOneAsync(filter, update);
+            var result = await _context.Products.FindOneAndUpdateAsync(filter, update, new FindOneAndUpdateOptions<Product>
+            {
+                ReturnDocument = ReturnDocument.After // Return the updated product
+            });
 
-            if (result.ModifiedCount == 0)
+            if (result == null)
             {
                 throw new Exception($"Product with ID {productId} not found or quantity unchanged.");
+            }
+            if (result.Quantity <= 10)
+            {
+                // Send notification to the vendor
+                await _notificationService.SendLowStockNotification(result);
             }
         }
 
