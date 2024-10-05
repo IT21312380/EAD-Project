@@ -11,8 +11,11 @@ namespace EliteWear.Models
         public string? Email { get; set; }
         public string? Username { get; set; }
         public string? PasswordHash { get; set; }
-
         public string? State { get; set; }
+
+        public string? Requested { get; set; }
+
+
 
     }
 }

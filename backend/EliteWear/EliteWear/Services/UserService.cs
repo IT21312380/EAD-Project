@@ -19,7 +19,7 @@ namespace EliteWear.Services
             _context = context;
         }
 
-        public async Task<bool> RegisterUser(string username, string email, string password, string state)
+        public async Task<bool> RegisterUser(string username, string email, string password, string state, string requested)
         {
             var existingUser = await _context.Users.Find(u => u.Username == username).FirstOrDefaultAsync();
             if (existingUser != null)
@@ -30,7 +30,8 @@ namespace EliteWear.Services
                 Username = username,
                 Email = email,
                 PasswordHash = HashPassword(password),
-                State = state
+                State = state,
+                Requested = requested
 
             };
 
@@ -106,5 +107,20 @@ namespace EliteWear.Services
 
             return result.ModifiedCount > 0;
         }
+
+        public async Task<bool> RequestedUserAsync(string email)
+        {
+            var user = await _context.Users.Find(u => u.Email == email).FirstOrDefaultAsync();
+            if (user == null)
+                return false;
+
+            var update = Builders<User>.Update.Set(u => u.Requested, "Yes");
+            var result = await _context.Users.UpdateOneAsync(u => u.Email == email, update);
+
+            return result.ModifiedCount > 0;
+        }
+
+
+        
     }
 }
