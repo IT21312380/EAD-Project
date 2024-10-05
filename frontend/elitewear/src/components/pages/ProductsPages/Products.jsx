@@ -15,27 +15,25 @@ const Products = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get("http://localhost:5133/api/product");
-        setProducts(response.data); // Update state with fetched products
-        // Extract unique categories
+        setProducts(response.data);
         const uniqueCategories = [
           ...new Set(response.data.map((product) => product.category)),
         ];
-        setCategories(uniqueCategories); // Set categories for dropdown
+        setCategories(uniqueCategories);
       } catch (err) {
         setError("Failed to fetch products."); // Handle error
       } finally {
-        setLoading(false); // Update loading state
+        setLoading(false);
       }
     };
 
-    fetchProducts(); // Call the fetch function
-  }, []); // Empty dependency array means this effect runs once on mount
+    fetchProducts();
+  }, []);
 
   // Get current user ID from local storage
   // const currentUserId = localStorage.getItem("currentUserId");
-  const currentUserId = "1234"; // Temporary user ID for testing
+  const currentUserId = "1234";
 
-  // Handle delete product
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:5133/api/product/${id}`);
@@ -50,15 +48,15 @@ const Products = () => {
 
   // Navigate to update page
   const handleUpdate = (id) => {
-    navigate(`/update-product/${id}`); // Route to update page with the product ID
+    navigate(`/update-product/${id}`);
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Display loading message while fetching
+    return <div>Loading...</div>;
   }
 
   if (error) {
-    return <div>{error}</div>; // Display error message if fetching fails
+    return <div>{error}</div>;
   }
 
   // Filter products based on the current user ID (VendorId) and search query/category

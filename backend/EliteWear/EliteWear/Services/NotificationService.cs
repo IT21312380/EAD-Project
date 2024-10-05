@@ -55,5 +55,16 @@ namespace EliteWear.Services
                 .Find(notification => notification.NotificationType == "Customer")
                 .ToListAsync();
         }
+
+        public async Task SendLowStockNotification(Product product)
+        {
+            var vendorId = product.VendorId;
+            var id = 1234;
+
+            string message = $"Product '{product.Name}' (ID: {product.Id}) has low stock. Remaining quantity: {product.Quantity}.";
+
+            await CreateCSRNotificationAsync(id, vendorId, message);
+        }
+
     }
 }

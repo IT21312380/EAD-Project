@@ -19,9 +19,9 @@ namespace EliteWear.Services
             return await _context.Orders.Find(order => true).ToListAsync();
         }
 
-        public async Task<Order?> GetOrderByIdAsync(int id)
+        public async Task<List<Order>> GetOrderByIdAsync(int id)
         {
-            return await _context.Orders.Find(order => order.Id == id).FirstOrDefaultAsync();
+            return await _context.Orders.Find(order => order.UserId == id).ToListAsync();
         }
 
         public async Task<int> GetNextOrderIdAsync()
@@ -40,7 +40,11 @@ namespace EliteWear.Services
             order.Id = await GetNextOrderIdAsync(); // Set the auto-incrementing ID
 
             await _context.Orders.InsertOneAsync(order);
-
+            foreach (var item in order.Items)
+            {
+                // Deduct the quantity for each product in the order
+                await _productService.DeductProductQuantityAsync(item.Id, item.Qty);
+            }
 
 
         }
