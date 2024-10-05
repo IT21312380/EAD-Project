@@ -40,7 +40,11 @@ namespace EliteWear.Services
             order.Id = await GetNextOrderIdAsync(); // Set the auto-incrementing ID
 
             await _context.Orders.InsertOneAsync(order);
-
+            foreach (var item in order.Items)
+            {
+                // Deduct the quantity for each product in the order
+                await _productService.DeductProductQuantityAsync(item.Id, item.Qty);
+            }
 
 
         }

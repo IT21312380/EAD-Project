@@ -61,7 +61,7 @@ const CreateProduct = () => {
         category: product.category,
         quantity: parseInt(product.quantity),
         vendorId: parseInt(product.vendorId),
-        imageUrl: imageUrl, // Set the image URL
+        imageUrl: imageUrl,
       });
 
       console.log(response.data);

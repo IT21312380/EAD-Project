@@ -16,14 +16,14 @@ namespace EliteWear.Controllers
         }
 
         [HttpGet("csr/{customerId}")]
-        public async Task<IActionResult> GetVendorNotifications(int customerId)
+        public async Task<IActionResult> GetNotificationsFromCSR(int customerId)
         {
             var notifications = await _notificationService.GetNotificationsFromCSRAsync(customerId);
             return Ok(notifications);
         }
 
         [HttpGet("customer")]
-        public async Task<IActionResult> GetCustomerNotifications()
+        public async Task<IActionResult> GetNotificationsFromCustomers()
         {
             var notifications = await _notificationService.NotificationsFromCustomerAsync();
             return Ok(notifications);
