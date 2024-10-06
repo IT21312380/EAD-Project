@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./AdminProductPage.css"; // Import custom CSS for styling
+import AdminNavBar from "../../common/adminNavBar/AdminNavBar";
 
 const AdminProductPage = () => {
   const [products, setProducts] = useState([]);
@@ -15,12 +16,12 @@ const AdminProductPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:5133/api/product");
-        setProducts(response.data);
-        const uniqueCategories = [
-          ...new Set(response.data.map((product) => product.category)),
-        ];
-        setCategories(uniqueCategories);
+        // const response = await axios.get("http://localhost:5133/api/product");
+        // setProducts(response.data);
+        // const uniqueCategories = [
+        //   ...new Set(response.data.map((product) => product.category)),
+        // ];
+        // setCategories(uniqueCategories);
       } catch (err) {
         setError("Failed to fetch products.");
       } finally {
@@ -55,6 +56,8 @@ const AdminProductPage = () => {
   }
 
   return (
+    <div>
+    <AdminNavBar/>
     <div className="admin-product-page">
       <h2>Admin Inventory</h2>
 
@@ -132,6 +135,7 @@ const AdminProductPage = () => {
           ))}
         </div>
       )}
+    </div>
     </div>
   );
 };
