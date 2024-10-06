@@ -27,6 +27,7 @@ namespace EliteWear.Services
 
             var vendor = new Vendor
             {
+                VendorId= await GetNextOrderIdAsync(),
                 Username = username,
                 Email = email,
                 PasswordHash = HashPassword(password)
@@ -34,6 +35,16 @@ namespace EliteWear.Services
 
             await _context.Vendor.InsertOneAsync(vendor);
             return true;
+        }
+
+        public async Task<int> GetNextOrderIdAsync()
+        {
+            var lastVendor = await _context.Vendor.Find(user => true)
+                .Sort(Builders<Vendor>.Sort.Descending(o => o.VendorId))
+                .Limit(1)
+                .FirstOrDefaultAsync();
+
+            return lastVendor?.VendorId + 1 ?? 1; // If no orders exist, start at 1
         }
 
         public async Task<Vendor> AuthenticateVendor(string email, string password)

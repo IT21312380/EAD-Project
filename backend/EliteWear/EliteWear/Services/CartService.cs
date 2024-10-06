@@ -19,36 +19,62 @@ namespace EliteWear.Services
 
         public async Task<Cart?> GetCartByIdAsync(int id)
         {
-            return await _context.Carts.Find(cart => cart.Id == id).FirstOrDefaultAsync();
+            return await _context.Carts.Find(cart => cart.UserId == id).FirstOrDefaultAsync();
+        }
+
+        // Method to get the next auto-incrementing cart ID
+        public async Task<int> GetNextCartIdAsync()
+        {
+            var lastCart = await _context.Carts.Find(cart => true)
+                .Sort(Builders<Cart>.Sort.Descending(c => c.Id))
+                .Limit(1)
+                .FirstOrDefaultAsync();
+
+            return lastCart?.Id + 1 ?? 1; // If no carts exist, start at 1
         }
 
         public async Task CreateCartAsync(Cart cart)
         {
+            // Set auto-incrementing ID
+            cart.Id = await GetNextCartIdAsync();
             await _context.Carts.InsertOneAsync(cart);
         }
 
         public async Task UpdateCartAsync(int id, Cart updatedCart)
         {
-            await _context.Carts.ReplaceOneAsync(cart => cart.Id == id, updatedCart);
+            var filter = Builders<Cart>.Filter.Eq(cart => cart.UserId, id);
+            var updateDefinition = Builders<Cart>.Update
+                .Set(cart => cart.Items, updatedCart.Items) 
+                .Set(cart => cart.TotalPrice, updatedCart.TotalPrice); 
+
+            var result = await _context.Carts.UpdateOneAsync(filter, updateDefinition);
+
+            if (result.ModifiedCount == 0)
+            {
+                throw new Exception("Cart not found or no changes made.");
+            }
         }
 
         public async Task DeleteCartAsync(int id)
         {
-            await _context.Carts.DeleteOneAsync(cart => cart.Id == id);
+            await _context.Carts.DeleteOneAsync(cart => cart.UserId == id);
         }
-        public async Task<bool> RemoveCartItemAsync(int cartId, int cartItemId)
+
+        public async Task<bool> RemoveCartItemAsync(int UserId, int cartItemId)
         {
-            // Find the cart by its ID
-            var cart = await _context.Carts.Find(c => c.Id == cartId).FirstOrDefaultAsync();
+            // Find the cart by UserId
+            var cart = await _context.Carts.Find(c => c.UserId == UserId).FirstOrDefaultAsync();
             if (cart == null || cart.Items == null)
             {
-                return false; // Cart or cart items not found
+                Console.WriteLine($"Cart with UserId {UserId} not found.");
+                return false; // Cart or items not found
             }
 
             // Find the item to remove based on cartItemId
             var cartItem = cart.Items.FirstOrDefault(item => item.Id == cartItemId);
             if (cartItem == null)
             {
+                Console.WriteLine($"Cart item with Id {cartItemId} not found.");
                 return false; // Cart item not found
             }
 
@@ -59,7 +85,7 @@ namespace EliteWear.Services
             cart.TotalPrice = cart.Items.Sum(item => item.Price * item.Quantity);
 
             // Update the cart in the database
-            var result = await _context.Carts.ReplaceOneAsync(c => c.Id == cartId, cart);
+            var result = await _context.Carts.ReplaceOneAsync(c => c.UserId == UserId, cart);
 
             return result.ModifiedCount > 0; // Return true if the update was successful
         }

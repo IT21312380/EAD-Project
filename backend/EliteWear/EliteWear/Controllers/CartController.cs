@@ -49,10 +49,10 @@ public class CartController : ControllerBase
         await _cartService.DeleteCartAsync(id);
         return NoContent();
     }
-    [HttpDelete("{cartId}/items/{cartItemId}")]
-    public async Task<IActionResult> DeleteCartItem(int cartId, int cartItemId)
+    [HttpDelete("{UserId}/items/{cartItemId}")]
+    public async Task<IActionResult> DeleteCartItem(int UserId, int cartItemId)
     {
-        var success = await _cartService.RemoveCartItemAsync(cartId, cartItemId);
+        var success = await _cartService.RemoveCartItemAsync(UserId, cartItemId);
 
         if (!success)
         {

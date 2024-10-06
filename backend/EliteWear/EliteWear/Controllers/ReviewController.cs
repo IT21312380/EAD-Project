@@ -28,6 +28,17 @@ public class ReviewController : ControllerBase
         return Ok(review);
     }
 
+    [HttpGet("vendor/{vendorId}")]
+    public async Task<IActionResult> GetReviewsByVendorIdAsync(int vendorId)
+    {
+        var review = await _reviewService.GetReviewsByVendorIdAsync(vendorId);
+        if (review == null)
+            return NotFound();
+        return Ok(review);
+    }
+
+
+
     [HttpPost]
     public async Task<IActionResult> CreateReview([FromBody] Review review)
     {
