@@ -1,0 +1,82 @@
+/* Container for the order list */
+.csr-order-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+/* Title styling */
+.csr-order-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Loading and error messages */
+.csr-order-loading,
+.csr-order-error {
+  text-align: center;
+  font-size: 18px;
+  margin: 20px;
+}
+
+/* Empty state message */
+.csr-order-empty {
+  text-align: center;
+  font-size: 16px;
+  color: #777;
+}
+
+/* Table styling */
+.csr-order-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: white;
+}
+
+.csr-order-table th,
+.csr-order-table td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.csr-order-table th {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+.csr-order-table td {
+  font-size: 14px;
+}
+
+/* List of order items */
+.csr-order-items-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+/* Status selection dropdown */
+.csr-order-status-select {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Update button */
+.csr-order-update-btn {
+  padding: 8px 12px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.csr-order-update-btn:hover {
+  background-color: #218838;
+}

@@ -1,40 +1,38 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "./CSRNotificationList.css";
 
 const CSRNotificationList = () => {
-  const [notifications, setNotifications] = useState([]); // State to hold customer notifications
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to handle modal visibility
-  const [currentNotification, setCurrentNotification] = useState(null); // State to track current notification being replied to
-  const [replyMessage, setReplyMessage] = useState(""); // State to hold reply message
+  const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentNotification, setCurrentNotification] = useState(null);
+  const [replyMessage, setReplyMessage] = useState("");
 
   useEffect(() => {
-    // Fetch customer notifications when the component mounts
     const fetchCustomerNotifications = async () => {
       try {
         const response = await axios.get(
           "http://localhost:5133/api/Notification/customer"
-        ); // Call the API to get customer notifications
-        setNotifications(response.data); // Update state with fetched notifications
+        );
+        setNotifications(response.data);
       } catch (err) {
-        setError("Failed to fetch notifications from customers."); // Handle error
+        setError("Failed to fetch notifications from customers.");
       } finally {
-        setLoading(false); // Stop loading once data is fetched or error occurs
+        setLoading(false);
       }
     };
 
-    fetchCustomerNotifications(); // Trigger the fetch function
-  }, []); // Empty dependency array ensures this runs once on mount
+    fetchCustomerNotifications();
+  }, []);
 
-  // Open the modal for the selected notification
   const openReplyModal = (notification) => {
-    setCurrentNotification(notification); // Set the current notification for reply
-    setReplyMessage(""); // Reset the reply message
-    setIsModalOpen(true); // Open the modal
+    setCurrentNotification(notification);
+    setReplyMessage("");
+    setIsModalOpen(true);
   };
 
-  // Handle reply submission
   const handleReplySubmit = async () => {
     if (!currentNotification || !replyMessage) {
       alert("Please enter a reply message.");
@@ -42,53 +40,45 @@ const CSRNotificationList = () => {
     }
 
     try {
-      // Prepare the reply payload
-      // Prepare the reply payload
       const notificationDto = {
-        id: "6", // Reuse the notification ID (if applicable)
         message: replyMessage,
       };
       const customerId = currentNotification.customerId;
-      console.log(customerId);
 
-      // Send the reply to the customer via the new API endpoint
       await axios.post(
-        `http://localhost:5133/api/Notification/csr?customerId=${customerId}`, // Updated endpoint for CSR
+        `http://localhost:5133/api/Notification/csr?customerId=${customerId}`,
         {
-          customerId: customerId, // Pass the customerId
-          ...notificationDto, // Spread the notification DTO properties
+          customerId: customerId,
+          ...notificationDto,
         }
       );
 
       alert("Reply sent successfully!");
-      setIsModalOpen(false); // Close the modal after sending
+      setIsModalOpen(false);
     } catch (err) {
       console.error("Failed to send reply:", err);
     }
   };
 
-  // Close the modal without sending a reply
   const closeReplyModal = () => {
     setIsModalOpen(false);
   };
 
-  // Handle loading state
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="csr-notifications-loading">Loading...</div>;
   }
 
-  // Handle error state
   if (error) {
-    return <div>{error}</div>;
+    return <div className="csr-notifications-error">{error}</div>;
   }
 
   return (
-    <div>
+    <div className="csr-notifications-container">
       <h2>Notifications From Customers</h2>
       {notifications.length === 0 ? (
         <p>No notifications found from customers.</p>
       ) : (
-        <table border="1" cellPadding="5" cellSpacing="0">
+        <table className="csr-notifications-table">
           <thead>
             <tr>
               <th>ID</th>
@@ -113,7 +103,10 @@ const CSRNotificationList = () => {
                   })}
                 </td>
                 <td>
-                  <button onClick={() => openReplyModal(notification)}>
+                  <button
+                    className="csr-notifications-reply-btn"
+                    onClick={() => openReplyModal(notification)}
+                  >
                     Reply
                   </button>
                 </td>
@@ -123,24 +116,29 @@ const CSRNotificationList = () => {
         </table>
       )}
 
-      {/* Modal for replying to a notification */}
       {isModalOpen && (
-        <div style={modalStyles.overlay}>
-          <div style={modalStyles.modal}>
+        <div className="csr-modal-overlay">
+          <div className="csr-modal">
             <h2>Reply to Notification</h2>
             <p>{currentNotification?.message}</p>
             <textarea
+              className="csr-modal-textarea"
               value={replyMessage}
               onChange={(e) => setReplyMessage(e.target.value)}
               placeholder="Type your reply here"
               rows={5}
-              style={modalStyles.textarea}
             />
             <br />
-            <button onClick={handleReplySubmit} style={modalStyles.button}>
+            <button
+              className="csr-modal-btn csr-modal-btn-submit"
+              onClick={handleReplySubmit}
+            >
               Send Reply
             </button>
-            <button onClick={closeReplyModal} style={modalStyles.button}>
+            <button
+              className="csr-modal-btn csr-modal-btn-cancel"
+              onClick={closeReplyModal}
+            >
               Cancel
             </button>
           </div>
@@ -148,39 +146,6 @@ const CSRNotificationList = () => {
       )}
     </div>
   );
-};
-
-// Basic inline styles for modal (can be improved with CSS or a library like Material-UI)
-const modalStyles = {
-  overlay: {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modal: {
-    backgroundColor: "#fff",
-    padding: "20px",
-    borderRadius: "5px",
-    maxWidth: "800px",
-    width: "100%",
-    textAlign: "center",
-  },
-  textarea: {
-    width: "100%",
-    padding: "10px",
-    marginTop: "10px",
-    margin: "10px",
-  },
-  button: {
-    margin: "10px",
-    padding: "10px 20px",
-  },
 };
 
 export default CSRNotificationList;

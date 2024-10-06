@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "./VendorNotifications.css"; // Import the CSS file
 
 const VendorNotifications = () => {
   const [notifications, setNotifications] = useState([]); // State to hold customer notifications
@@ -8,9 +9,7 @@ const VendorNotifications = () => {
 
   useEffect(() => {
     // Fetch customer notifications when the component mounts
-    // Get current user ID from local storage
-    // const currentUserId = localStorage.getItem("currentUserId");
-    const vendorId = "1234";
+    const vendorId = "1234"; // Replace with dynamic vendor ID if needed
     const fetchCustomerNotifications = async () => {
       try {
         const response = await axios.get(
@@ -29,23 +28,32 @@ const VendorNotifications = () => {
 
   // Handle loading state
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="vendor-notifications-loading">Loading...</div>;
   }
 
   // Handle error state
   if (error) {
-    return <div>{error}</div>;
+    return <div className="vendor-notifications-error">{error}</div>;
   }
 
   return (
-    <div>
-      <h2>Notifications From Customers</h2>
+    <div className="vendor-notifications-container">
+      <h2 className="vendor-notifications-title">
+        Notifications From Customers
+      </h2>
       {notifications.length === 0 ? (
-        <p>No notifications found from System.</p>
+        <p className="vendor-notifications-empty">
+          No notifications found from System.
+        </p>
       ) : (
-        <table border="1" cellPadding="5" cellSpacing="0">
+        <table
+          className="vendor-notifications-table"
+          border="1"
+          cellPadding="5"
+          cellSpacing="0"
+        >
           <thead>
-            <tr>
+            <tr className="vendor-notifications-header">
               <th>ID</th>
               <th>Message</th>
               <th>Date</th>
@@ -53,7 +61,7 @@ const VendorNotifications = () => {
           </thead>
           <tbody>
             {notifications.map((notification) => (
-              <tr key={notification.id}>
+              <tr key={notification.id} className="vendor-notifications-row">
                 <td>{notification.id}</td>
                 <td>{notification.message}</td>
                 <td>
