@@ -8,11 +8,15 @@ namespace EliteWear.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string? Id { get; set; }  
+        public int ? UserId { get; set; }
         public string? Email { get; set; }
         public string? Username { get; set; }
         public string? PasswordHash { get; set; }
-
         public string? State { get; set; }
+
+        public string? Requested { get; set; }
+
+
 
     }
 }
