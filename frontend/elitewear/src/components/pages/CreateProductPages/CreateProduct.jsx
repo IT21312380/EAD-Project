@@ -12,6 +12,7 @@ const CreateProduct = () => {
     category: "",
     quantity: "",
     vendorId: "",
+    status: "",
     imageUrl: "", // This will hold the image URL after upload
   });
   const [image, setImage] = useState(null);
@@ -69,6 +70,7 @@ const CreateProduct = () => {
         category: product.category,
         quantity: parseInt(product.quantity),
         vendorId: parseInt(product.vendorId),
+        status: "Pending",
         imageUrl: imageUrl,
       });
 

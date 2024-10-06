@@ -42,8 +42,19 @@ const AdminProductPage = () => {
     }
   };
 
-  const handleUpdate = (id) => {
-    navigate(`/update-product/${id}`);
+  const handleActivate = async (id) => {
+    try {
+      await axios.put(`http://localhost:5133/api/product/activate/${id}`);
+      setProducts(
+        products.map((product) =>
+          product.id === id ? { ...product, status: "Active" } : product
+        )
+      );
+      alert("Product activated successfully.");
+    } catch (err) {
+      console.error("Failed to activate product:", err);
+      alert("Failed to activate product.");
+    }
   };
 
   if (loading) {
@@ -97,11 +108,11 @@ const AdminProductPage = () => {
               <div className="product-details">
                 <h3 className="product-name">{product.name}</h3>
                 <p className="product-description"> {product.description}</p>
-                <p className="product-price-tag ">
+                <p className="product-price-tag">
                   Price:{" "}
                   <span className="product-price"> ${product.price}</span>
                 </p>
-                <p className="product-price-tag ">
+                <p className="product-price-tag">
                   Category:
                   <span className="product-price"> {product.category}</span>
                 </p>
@@ -116,9 +127,13 @@ const AdminProductPage = () => {
                   </span>
                 </p>
 
-                <p className="product-price-tag ">
+                <p className="product-price-tag">
                   Vendor ID:
                   <span className="product-price"> {product.vendorId}</span>
+                </p>
+
+                <p className="product-price-tag">
+                  Status: <span>{product.status}</span>
                 </p>
 
                 <button
@@ -126,6 +141,13 @@ const AdminProductPage = () => {
                   onClick={() => handleDelete(product.id)}
                 >
                   Delete
+                </button>
+                <button
+                  className="btn btn-success activate-btn"
+                  onClick={() => handleActivate(product.id)}
+                  disabled={product.status === "Active"}
+                >
+                  {product.status === "Active" ? "Activated" : "Activate"}
                 </button>
               </div>
             </div>

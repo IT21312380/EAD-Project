@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import { useVendorLogin } from "../../../hooks/useVendorLogin";
+import { useNavigate } from "react-router-dom";
 import "./VendorLogin.css"; // Import CSS file
 
 function VendorLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login, error, isLoading } = useVendorLogin();
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     await login(email, password);
+    navigate("/");
+    
   };
 
   return (
