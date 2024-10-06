@@ -26,6 +26,7 @@ namespace EliteWear.Services
         public async Task CreateProductAsync(Product product)
         {
             // No need to set Id here, it is handled in the Product constructor
+            // product.Status = "Pending";
             await _context.Products.InsertOneAsync(product);
         }
 
@@ -90,6 +91,25 @@ namespace EliteWear.Services
             {
                 await _notificationService.SendLowStockNotification(result);
             }
+        }
+
+        public async Task ActivateProductStatusAsync(int productId)
+        {
+            var filter = Builders<Product>.Filter.Eq(product => product.Id, productId);
+            var update = Builders<Product>.Update.Set(product => product.Status, "Active");
+
+            var result = await _context.Products.FindOneAndUpdateAsync(filter, update, new FindOneAndUpdateOptions<Product>
+            {
+                ReturnDocument = ReturnDocument.After
+            });
+
+            if (result == null)
+            {
+                throw new Exception($"Product with ID {productId} not found or could not be activated.");
+            }
+
+            // Optionally, log or send a notification if needed
+            Console.WriteLine($"Product with ID {productId} has been activated.");
         }
 
 
