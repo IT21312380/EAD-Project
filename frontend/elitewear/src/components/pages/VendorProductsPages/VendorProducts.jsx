@@ -4,13 +4,13 @@ import { useNavigate } from "react-router-dom";
 import "./VendorProducts.css";
 
 const VendorProducts = () => {
-  const [products, setProducts] = useState([]); // State to hold products
-  const [loading, setLoading] = useState(true); // State to handle loading status
-  const [error, setError] = useState(null); // State to handle error
-  const [searchQuery, setSearchQuery] = useState(""); // State for search query
-  const [selectedCategory, setSelectedCategory] = useState(""); // State for selected category
-  const [categories, setCategories] = useState([]); // State to hold categories
-  const navigate = useNavigate(); // Use to navigate to update page
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -22,7 +22,7 @@ const VendorProducts = () => {
         ];
         setCategories(uniqueCategories);
       } catch (err) {
-        setError("Failed to fetch products."); // Handle error
+        setError("Failed to fetch products.");
       } finally {
         setLoading(false);
       }
@@ -31,13 +31,14 @@ const VendorProducts = () => {
     fetchProducts();
   }, []);
 
-  // Get current user ID from local storage
-  const currentUserId = "1234";
+  // Get current user vendorId from local storage
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+  const currentVendorId = currentUser?.vendor?.vendorId;
+  console.log(currentVendorId);
 
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:5133/api/product/${id}`);
-      // Remove the deleted product from the state
       setProducts(products.filter((product) => product.id !== id));
       alert("Product deleted successfully.");
     } catch (err) {
@@ -46,7 +47,6 @@ const VendorProducts = () => {
     }
   };
 
-  // Navigate to update page
   const handleUpdate = (id) => {
     navigate(`/update-product/${id}`);
   };
@@ -59,9 +59,9 @@ const VendorProducts = () => {
     return <div className="vendor-products-error">{error}</div>;
   }
 
-  // Filter products based on the current user ID (VendorId) and search query/category
+  // Filter products based on the current vendorId, search query, and category
   const filteredProducts = products.filter((product) => {
-    const matchesVendorId = product.vendorId === parseInt(currentUserId, 10); // Ensure to parse user ID to integer
+    const matchesVendorId = product.vendorId === currentVendorId;
     const matchesSearchQuery = product.name
       .toLowerCase()
       .includes(searchQuery.toLowerCase());
@@ -75,7 +75,6 @@ const VendorProducts = () => {
     <div className="vendor-products-container">
       <h2 className="vendor-products-title">Products</h2>
 
-      {/* Search Bar */}
       <input
         type="text"
         className="vendor-products-search"
@@ -84,7 +83,6 @@ const VendorProducts = () => {
         onChange={(e) => setSearchQuery(e.target.value)}
       />
 
-      {/* Category Filter Dropdown */}
       <select
         className="vendor-products-category"
         value={selectedCategory}
