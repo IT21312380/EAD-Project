@@ -70,7 +70,6 @@ const CSROrderList = () => {
         console.log(order, order.userId);
         var customerId = order.userId;
         const notificationDto = {
-          id: 3, // Use uuid for unique ID
           message: "Your order has been canceled successfully.",
           notificationType: "Customer",
         };
@@ -80,6 +79,9 @@ const CSROrderList = () => {
           notificationDto
         );
         await sendCancellationNotification(customerId, notificationDto);
+        for (const item of order.items) {
+          await restockProduct(item.id, item.qty);
+        }
       }
     } catch (err) {
       console.error("Failed to update order status:", err);
@@ -92,6 +94,23 @@ const CSROrderList = () => {
       await axios.post(
         `http://localhost:5133/api/Notification/csr?customerId=${customerId}`,
         notificationDto
+      );
+    } catch (err) {
+      console.error("Failed to send notification:", err);
+    }
+  };
+
+  const restockProduct = async (productId, quantity) => {
+    try {
+      console.log(productId);
+      await axios.put(
+        `http://localhost:5133/api/product/restock/${productId}`,
+        quantity,
+        {
+          headers: {
+            "Content-Type": "application/json", // Set Content-Type to application/json
+          },
+        }
       );
     } catch (err) {
       console.error("Failed to send notification:", err);

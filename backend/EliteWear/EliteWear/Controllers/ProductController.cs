@@ -87,4 +87,13 @@ public class ProductController : ControllerBase
         return Ok(new { imageUrl });
     }
 
+    [HttpPut("restock/{productId}")]
+    public async Task<IActionResult> RestockProductQuantity(int productId, [FromBody] int quantity)
+    {
+        await _productService.RestockProductQuantityAsync(productId, quantity);
+        return NoContent();
+    }
+
+
+
 }
