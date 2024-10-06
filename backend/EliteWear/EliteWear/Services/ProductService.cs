@@ -26,6 +26,7 @@ namespace EliteWear.Services
         public async Task CreateProductAsync(Product product)
         {
             // No need to set Id here, it is handled in the Product constructor
+            // product.Status = "Pending";
             await _context.Products.InsertOneAsync(product);
         }
 
@@ -36,8 +37,19 @@ namespace EliteWear.Services
 
         public async Task DeleteProductAsync(int id)
         {
+            // Check if the product exists in any active orders
+            var orderWithProduct = await _context.Orders.Find(order => order.Items.Any(item => item.Id == id)).FirstOrDefaultAsync();
+
+            if (orderWithProduct != null)
+            {
+                // Product is part of an order, so we cannot delete it
+                throw new InvalidOperationException($"Cannot delete product with ID {id} because it is part of an active order.");
+            }
+
+            // Product is not in any order, proceed with deletion
             await _context.Products.DeleteOneAsync(product => product.Id == id);
         }
+
 
         public async Task DeductProductQuantityAsync(int productId, int quantityToDeduct)
         {
@@ -46,7 +58,7 @@ namespace EliteWear.Services
 
             var result = await _context.Products.FindOneAndUpdateAsync(filter, update, new FindOneAndUpdateOptions<Product>
             {
-                ReturnDocument = ReturnDocument.After // Return the updated product
+                ReturnDocument = ReturnDocument.After
             });
 
             if (result == null)
@@ -59,6 +71,47 @@ namespace EliteWear.Services
                 await _notificationService.SendLowStockNotification(result);
             }
         }
+
+        public async Task RestockProductQuantityAsync(int productId, int quantityToAdd)
+        {
+            var filter = Builders<Product>.Filter.Eq(product => product.Id, productId);
+            var update = Builders<Product>.Update.Inc(product => product.Quantity, quantityToAdd);
+
+            var result = await _context.Products.FindOneAndUpdateAsync(filter, update, new FindOneAndUpdateOptions<Product>
+            {
+                ReturnDocument = ReturnDocument.After
+            });
+
+            if (result == null)
+            {
+                throw new Exception($"Product with ID {productId} not found.");
+            }
+
+            if (result.Quantity <= 10)
+            {
+                await _notificationService.SendLowStockNotification(result);
+            }
+        }
+
+        public async Task ActivateProductStatusAsync(int productId)
+        {
+            var filter = Builders<Product>.Filter.Eq(product => product.Id, productId);
+            var update = Builders<Product>.Update.Set(product => product.Status, "Active");
+
+            var result = await _context.Products.FindOneAndUpdateAsync(filter, update, new FindOneAndUpdateOptions<Product>
+            {
+                ReturnDocument = ReturnDocument.After
+            });
+
+            if (result == null)
+            {
+                throw new Exception($"Product with ID {productId} not found or could not be activated.");
+            }
+
+            // Optionally, log or send a notification if needed
+            Console.WriteLine($"Product with ID {productId} has been activated.");
+        }
+
 
     }
 }

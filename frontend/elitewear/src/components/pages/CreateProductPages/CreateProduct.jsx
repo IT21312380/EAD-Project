@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./CreateProduct.css"; // Import the CSS file
 
 const CreateProduct = () => {
   // State to hold form data and image
@@ -11,9 +12,21 @@ const CreateProduct = () => {
     category: "",
     quantity: "",
     vendorId: "",
+    status: "",
     imageUrl: "", // This will hold the image URL after upload
   });
   const [image, setImage] = useState(null);
+
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+  const currentVendorId = currentUser?.vendor?.vendorId;
+  console.log(currentVendorId);
+
+  const categories = [
+    "Computers",
+    "Computer Components",
+    "Peripherals & Accessories",
+    "Storage & Networking",
+  ];
 
   // Handle input changes
   const handleChange = (e) => {
@@ -60,7 +73,8 @@ const CreateProduct = () => {
         price: parseFloat(product.price),
         category: product.category,
         quantity: parseInt(product.quantity),
-        vendorId: parseInt(product.vendorId),
+        vendorId: parseInt(currentVendorId),
+        status: "Pending",
         imageUrl: imageUrl,
       });
 
@@ -84,82 +98,92 @@ const CreateProduct = () => {
   };
 
   return (
-    <div>
-      <h2>Create Product</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Id</label>
+    <div className="create-product-container">
+      <h2 className="create-product-title">Create Product</h2>
+      <form onSubmit={handleSubmit} className="create-product-form">
+        <div className="form-group">
+          <label className="form-label">Id</label>
           <input
             type="text"
             name="id"
+            className="form-input"
             value={product.id}
             onChange={handleChange}
             required
           />
         </div>
-        <div>
-          <label>Name</label>
+        <div className="form-group">
+          <label className="form-label">Name</label>
           <input
             type="text"
             name="name"
+            className="form-input"
             value={product.name}
             onChange={handleChange}
             required
           />
         </div>
-        <div>
-          <label>Description</label>
+        <div className="form-group">
+          <label className="form-label">Description</label>
           <input
             type="text"
             name="description"
+            className="form-input"
             value={product.description}
             onChange={handleChange}
           />
         </div>
-        <div>
-          <label>Price</label>
+        <div className="form-group">
+          <label className="form-label">Price</label>
           <input
             type="number"
             name="price"
+            className="form-input"
             value={product.price}
             onChange={handleChange}
             required
           />
         </div>
-        <div>
-          <label>Category</label>
-          <input
-            type="text"
+        <div className="form-group">
+          <label className="form-label">Category</label>
+          <select
             name="category"
+            className="form-select"
             value={product.category}
             onChange={handleChange}
-          />
+            required
+          >
+            <option value="">Select a category</option>
+            {categories.map((category, index) => (
+              <option key={index} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
         </div>
-        <div>
-          <label>Quantity</label>
+        <div className="form-group">
+          <label className="form-label">Quantity</label>
           <input
             type="number"
             name="quantity"
+            className="form-input"
             value={product.quantity}
             onChange={handleChange}
             required
           />
         </div>
-        <div>
-          <label>Vendor ID</label>
+        <div className="form-group">
+          <label className="form-label">Upload Image</label>
           <input
-            type="number"
-            name="vendorId"
-            value={product.vendorId}
-            onChange={handleChange}
-            required
+            type="file"
+            className="form-file-input"
+            onChange={handleImageChange}
+            accept="image/*"
           />
         </div>
-        <div>
-          <label>Upload Image</label>
-          <input type="file" onChange={handleImageChange} accept="image/*" />
-        </div>
-        <button type="submit">Create Product</button>
+        <button type="submit" className="btn-submit">
+          Create Product
+        </button>
       </form>
     </div>
   );

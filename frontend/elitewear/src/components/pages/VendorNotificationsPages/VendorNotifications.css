@@ -1,0 +1,64 @@
+/* Container for notifications */
+.vendor-notifications-container {
+  max-width: 800px; /* Set max width for the notifications area */
+  margin: 0 auto; /* Center the container */
+  padding: 20px; /* Add padding around the container */
+  background-color: #f9f9f9; /* Light background color */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Title styling */
+.vendor-notifications-title {
+  text-align: center; /* Center the title */
+  margin-bottom: 20px; /* Space below the title */
+}
+
+/* Loading state styling */
+.vendor-notifications-loading {
+  text-align: center; /* Center loading message */
+  font-size: 18px; /* Font size for loading */
+  color: #007bff; /* Color for loading text */
+}
+
+/* Error message styling */
+.vendor-notifications-error {
+  color: red; /* Red text for error messages */
+  text-align: center; /* Center the error message */
+  margin-top: 10px; /* Space above error message */
+}
+
+/* Empty state message styling */
+.vendor-notifications-empty {
+  text-align: center; /* Center empty state message */
+  font-size: 16px; /* Font size for empty message */
+}
+
+/* Table styling */
+.vendor-notifications-table {
+  width: 100%; /* Full width */
+  border-collapse: collapse; /* Collapse borders */
+  margin-top: 20px; /* Space above the table */
+}
+
+/* Table header styling */
+.vendor-notifications-header {
+  background-color: #007bff; /* Background color for header */
+  color: white; /* Text color for header */
+}
+
+/* Table row styling */
+.vendor-notifications-row {
+  border-bottom: 1px solid #ccc; /* Border below each row */
+}
+
+/* Table cell styling */
+.vendor-notifications-row td {
+  padding: 10px; /* Padding for table cells */
+  text-align: left; /* Align text to the left */
+}
+
+/* Table cell hover effect */
+.vendor-notifications-row:hover {
+  background-color: #f1f1f1; /* Change background on hover */
+}

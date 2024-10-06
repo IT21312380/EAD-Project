@@ -47,13 +47,22 @@ function AllUsers() {
             <p>{user.email}</p>
             <p>{user.state}</p>
 
-            {/* Check if the user's state is 'pending' to enable the Activate button */}
-            <button 
-              disabled={user.state !== 'Pending'} // Disable if state is not 'pending'
-              onClick={() => handleActivateUser(user.email)} // Call the activate function
-            >
+          {user.state === 'Pending' && <p>Status: User has registered</p>}
+          {user.requested === 'Yes' && <p>Status: User has requested for Reactivation</p>}
+
+
+          {user.state === 'Pending' && (
+            <button onClick={() => handleActivateUser(user.email)}>
               Activate
             </button>
+          )}
+
+          {/* Conditionally render the Reactivate button only if reactivation is requested */}
+          {user.requested === 'Yes' && (
+            <button onClick={() => handleActivateUser(user.email)}>
+              Reactivate
+            </button>
+          )}
           </li>
         ))}
       </ul>

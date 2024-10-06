@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import "./UpdateProduct.css"; // Import CSS file
 
 const UpdateProduct = () => {
   const { id } = useParams(); // Get the product ID from the route parameters
@@ -14,6 +15,13 @@ const UpdateProduct = () => {
     vendorId: "",
     imageUrl: "",
   });
+
+  const categories = [
+    "Computers",
+    "Computer Components",
+    "Peripherals & Accessories",
+    "Storage & Networking",
+  ];
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -49,68 +57,83 @@ const UpdateProduct = () => {
   };
 
   return (
-    <div>
-      <h2>Update Product</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Name</label>
+    <div className="update-product-container">
+      <h2 className="update-product-title">Update Product</h2>
+      <form className="update-product-form" onSubmit={handleSubmit}>
+        <div className="update-product-input-group">
+          <label className="update-product-label">Name</label>
           <input
             type="text"
             name="name"
             value={product.name}
             onChange={handleChange}
             required
+            className="update-product-input"
           />
         </div>
-        <div>
-          <label>Description</label>
+        <div className="update-product-input-group">
+          <label className="update-product-label">Description</label>
           <input
             type="text"
             name="description"
             value={product.description}
             onChange={handleChange}
+            className="update-product-input"
           />
         </div>
-        <div>
-          <label>Price</label>
+        <div className="update-product-input-group">
+          <label className="update-product-label">Price</label>
           <input
             type="number"
             name="price"
             value={product.price}
             onChange={handleChange}
             required
+            className="update-product-input"
           />
         </div>
-        <div>
-          <label>Category</label>
-          <input
-            type="text"
+        <div className="update-product-input-group">
+          <label className="update-product-label">Category</label>
+          <select
             name="category"
             value={product.category}
             onChange={handleChange}
-          />
+            required
+            className="update-product-select"
+          >
+            <option value="">Select a category</option>
+            {categories.map((category, index) => (
+              <option key={index} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
         </div>
-        <div>
-          <label>Quantity</label>
+        <div className="update-product-input-group">
+          <label className="update-product-label">Quantity</label>
           <input
             type="number"
             name="quantity"
             value={product.quantity}
             onChange={handleChange}
             required
+            className="update-product-input"
           />
         </div>
-        <div>
-          <label>Vendor ID</label>
+        <div className="update-product-input-group">
+          <label className="update-product-label">Vendor ID</label>
           <input
             type="number"
             name="vendorId"
             value={product.vendorId}
             onChange={handleChange}
             required
+            className="update-product-input"
           />
         </div>
-        <button type="submit">Update Product</button>
+        <button type="submit" className="update-product-button">
+          Update Product
+        </button>
       </form>
     </div>
   );

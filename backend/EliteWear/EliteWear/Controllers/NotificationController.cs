@@ -32,14 +32,14 @@ namespace EliteWear.Controllers
         [HttpPost("csr")]
         public async Task<IActionResult> CreateCSRNotification(int customerId, [FromBody] NotificationDto notificationDto)
         {
-            await _notificationService.CreateCSRNotificationAsync(customerId, notificationDto.Id, notificationDto.Message);
+            await _notificationService.CreateCSRNotificationAsync(customerId, notificationDto.Message);
             return Ok();
         }
 
         [HttpPost("customer/{customerId}")]
         public async Task<IActionResult> CreateCustomerNotification(int customerId, [FromBody] NotificationDto notificationDto)
         {
-            await _notificationService.CreateCustomerNotificationAsync(notificationDto.Id, customerId, notificationDto.Message);
+            await _notificationService.CreateCustomerNotificationAsync(customerId, notificationDto.Message);
             return Ok();
         }
 

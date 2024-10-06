@@ -87,4 +87,27 @@ public class ProductController : ControllerBase
         return Ok(new { imageUrl });
     }
 
+    [HttpPut("restock/{productId}")]
+    public async Task<IActionResult> RestockProductQuantity(int productId, [FromBody] int quantity)
+    {
+        await _productService.RestockProductQuantityAsync(productId, quantity);
+        return NoContent();
+    }
+
+    [HttpPut("activate/{productId}")]
+    public async Task<IActionResult> UpdateProductStatus(int productId)
+    {
+        try
+        {
+            await _productService.ActivateProductStatusAsync(productId);
+            return Ok(new { message = $"Product with ID {productId} status updated to Active." });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+    }
+
+
+
 }

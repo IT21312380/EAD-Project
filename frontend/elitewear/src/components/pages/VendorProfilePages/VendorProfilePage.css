@@ -1,0 +1,66 @@
+/* Vendor Profile Container */
+.vendor-profile-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Header Styling */
+.vendor-profile-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.vendor-profile-title {
+  font-size: 26px;
+  font-weight: bold;
+  color: #333;
+}
+
+.vendor-profile-subtitle {
+  font-size: 20px;
+  color: #555;
+}
+
+/* Profile Details Styling */
+.vendor-profile-details {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.vendor-profile-info {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Profile Actions - Buttons */
+.vendor-profile-actions {
+  text-align: center;
+}
+
+.vendor-profile-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.vendor-profile-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Spacing and layout */
+.vendor-profile-container p {
+  margin: 0;
+}
