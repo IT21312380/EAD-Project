@@ -16,12 +16,12 @@ const AdminProductPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        // const response = await axios.get("http://localhost:5133/api/product");
-        // setProducts(response.data);
-        // const uniqueCategories = [
-        //   ...new Set(response.data.map((product) => product.category)),
-        // ];
-        // setCategories(uniqueCategories);
+         const response = await axios.get("http://localhost:5133/api/product");
+         setProducts(response.data);
+        const uniqueCategories = [
+           ...new Set(response.data.map((product) => product.category)),
+         ];
+         setCategories(uniqueCategories);
       } catch (err) {
         setError("Failed to fetch products.");
       } finally {
