@@ -27,6 +27,7 @@ namespace EliteWear.Services
 
             var user = new User
             {
+                UserId = await GetNextOrderIdAsync(),
                 Username = username,
                 Email = email,
                 PasswordHash = HashPassword(password),
@@ -37,6 +38,15 @@ namespace EliteWear.Services
 
             await _context.Users.InsertOneAsync(user);
             return true;
+        }
+        public async Task<int> GetNextOrderIdAsync()
+        {
+            var lastUser = await _context.Users.Find(user => true)
+                .Sort(Builders<User>.Sort.Descending(o => o.UserId))
+                .Limit(1)
+                .FirstOrDefaultAsync();
+
+            return lastUser?.UserId + 1 ?? 1; // If no orders exist, start at 1
         }
 
         public async Task<User> AuthenticateUser(string email, string password)
