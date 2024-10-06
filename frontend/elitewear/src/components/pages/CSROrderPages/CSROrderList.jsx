@@ -1,39 +1,37 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import SearchAndFilter from "../../common/searchAndFilter/SearchAndFilter";
-import { v4 as uuidv4 } from "uuid"; // Import UUID for unique ID generation
+import "./CSROrderList.css"; // Import CSS
 
 const CSROrderList = () => {
-  const [orders, setOrders] = useState([]); // State to hold orders
-  const [loading, setLoading] = useState(true); // State to handle loading status
-  const [error, setError] = useState(null); // State to handle error
-  const [selectedStatus, setSelectedStatus] = useState({}); // State to track selected status for each order
-  const [searchQuery, setSearchQuery] = useState(""); // State for search query
-  const [selectedCategory, setSelectedCategory] = useState(""); // State for selected category
-  const [categories, setCategories] = useState([]); // State to hold categories
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState({});
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const response = await axios.get("http://localhost:5133/api/order");
-        setOrders(response.data); // Update state with fetched orders
+        setOrders(response.data);
 
-        // Extract unique categories from orders or items (if applicable)
         const uniqueCategories = [
           ...new Set(response.data.map((order) => order.category)),
         ];
         setCategories(uniqueCategories);
       } catch (err) {
-        setError("Failed to fetch orders."); // Handle error
+        setError("Failed to fetch orders.");
       } finally {
-        setLoading(false); // Update loading state
+        setLoading(false);
       }
     };
 
-    fetchOrders(); // Call the fetch function
-  }, []); // Empty dependency array means this effect runs once on mount
+    fetchOrders();
+  }, []);
 
-  // Filter orders based on search query and selected category
   const filteredOrders = orders.filter((order) => {
     const matchesSearchQuery = order.items?.some((item) =>
       item.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -62,22 +60,14 @@ const CSROrderList = () => {
         },
       });
 
-      console.log("Updated status to:", status); // Log the updated status
-      // Check if the status is "Canceled"
+      console.log("Updated status to:", status);
       if (status === "Canceled") {
-        console.log("hit1");
         const order = orders.find((order) => order.id === orderId);
-        console.log(order, order.userId);
-        var customerId = order.userId;
+        const customerId = order.userId;
         const notificationDto = {
           message: "Your order has been canceled successfully.",
           notificationType: "Customer",
         };
-        console.log(
-          "Preparing to send notification:",
-          customerId,
-          notificationDto
-        );
         await sendCancellationNotification(customerId, notificationDto);
         for (const item of order.items) {
           await restockProduct(item.id, item.qty);
@@ -90,7 +80,6 @@ const CSROrderList = () => {
 
   const sendCancellationNotification = async (customerId, notificationDto) => {
     try {
-      console.log(customerId);
       await axios.post(
         `http://localhost:5133/api/Notification/csr?customerId=${customerId}`,
         notificationDto
@@ -102,32 +91,31 @@ const CSROrderList = () => {
 
   const restockProduct = async (productId, quantity) => {
     try {
-      console.log(productId);
       await axios.put(
         `http://localhost:5133/api/product/restock/${productId}`,
         quantity,
         {
           headers: {
-            "Content-Type": "application/json", // Set Content-Type to application/json
+            "Content-Type": "application/json",
           },
         }
       );
     } catch (err) {
-      console.error("Failed to send notification:", err);
+      console.error("Failed to restock product:", err);
     }
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Display loading message while fetching
+    return <div className="csr-order-loading">Loading...</div>;
   }
 
   if (error) {
-    return <div>{error}</div>; // Display error message if fetching fails
+    return <div className="csr-order-error">{error}</div>;
   }
 
   return (
-    <div>
-      <h2>Order List</h2>
+    <div className="csr-order-container">
+      <h2 className="csr-order-title">Order List</h2>
       <SearchAndFilter
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -136,9 +124,9 @@ const CSROrderList = () => {
         setSelectedCategory={setSelectedCategory}
       />
       {filteredOrders.length === 0 ? (
-        <p>No orders found for this user.</p>
+        <p className="csr-order-empty">No orders found for this user.</p>
       ) : (
-        <table border="1" cellPadding="5" cellSpacing="0">
+        <table className="csr-order-table">
           <thead>
             <tr>
               <th>Order ID</th>
@@ -155,7 +143,7 @@ const CSROrderList = () => {
                 <td>{order.id}</td>
                 <td>{order.userId}</td>
                 <td>
-                  <ul>
+                  <ul className="csr-order-items-list">
                     {order.items?.map((item) => (
                       <li key={item.id}>
                         {item.name} (Qty: {item.qty})
@@ -167,6 +155,7 @@ const CSROrderList = () => {
                 <td>{order.status}</td>
                 <td>
                   <select
+                    className="csr-order-status-select"
                     value={selectedStatus[order.id] || ""}
                     onChange={(e) =>
                       handleStatusChange(order.id, e.target.value)
@@ -179,7 +168,10 @@ const CSROrderList = () => {
                     <option value="Delivered">Delivered</option>
                     <option value="Canceled">Canceled</option>
                   </select>
-                  <button onClick={() => updateOrderStatus(order.id)}>
+                  <button
+                    className="csr-order-update-btn"
+                    onClick={() => updateOrderStatus(order.id)}
+                  >
                     Update
                   </button>
                 </td>
