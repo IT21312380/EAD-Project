@@ -45,7 +45,6 @@ const CSRNotificationList = () => {
       // Prepare the reply payload
       // Prepare the reply payload
       const notificationDto = {
-        id: "6", // Reuse the notification ID (if applicable)
         message: replyMessage,
       };
       const customerId = currentNotification.customerId;

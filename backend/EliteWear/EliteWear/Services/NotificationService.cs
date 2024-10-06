@@ -13,11 +13,11 @@ namespace EliteWear.Services
         }
 
         // Method to create a vendor notification
-        public async Task CreateCSRNotificationAsync(int customerId, int id, string message)
+        public async Task CreateCSRNotificationAsync(int customerId, string message)
         {
             var notification = new Notification
             {
-                Id = id, // Assign the Id provided by the user
+                Id = await GetNextOrderIdAsync(), // Assign the Id provided by the user
                 CustomerId = customerId,
                 Message = message,
                 NotificationType = "CSR"
@@ -25,13 +25,22 @@ namespace EliteWear.Services
 
             await _context.Notifications.InsertOneAsync(notification);
         }
+        public async Task<int> GetNextOrderIdAsync()
+        {
+            var lastNotification = await _context.Notifications.Find(notifications => true)
+                .Sort(Builders<Notification>.Sort.Descending(o => o.Id))
+                .Limit(1)
+                .FirstOrDefaultAsync();
+
+            return lastNotification?.Id + 1 ?? 1; // If no orders exist, start at 1
+        }
 
         // Method to create a customer notification
-        public async Task CreateCustomerNotificationAsync(int id, int customerId, string message)
+        public async Task CreateCustomerNotificationAsync(int customerId, string message)
         {
             var notification = new Notification
             {
-                Id = id, // Assign the Id provided by the user
+                Id = await GetNextOrderIdAsync(),
                 CustomerId = customerId,
                 Message = message,
                 NotificationType = "Customer"
@@ -59,11 +68,11 @@ namespace EliteWear.Services
         public async Task SendLowStockNotification(Product product)
         {
             var vendorId = product.VendorId;
-            var id = 1234;
+            var id = await GetNextOrderIdAsync();
 
             string message = $"Product '{product.Name}' (ID: {product.Id}) has low stock. Remaining quantity: {product.Quantity}.";
 
-            await CreateCSRNotificationAsync(id, vendorId, message);
+            await CreateCSRNotificationAsync(vendorId, message);
         }
 
     }
