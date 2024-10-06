@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const Products = () => {
+const VendorProducts = () => {
   const [products, setProducts] = useState([]); // State to hold products
   const [loading, setLoading] = useState(true); // State to handle loading status
   const [error, setError] = useState(null); // State to handle error
@@ -121,8 +121,18 @@ const Products = () => {
               <p>Category: {product.category}</p>
               <p>Quantity: {product.quantity}</p>
               <p>Vendor ID: {product.vendorId}</p>
-              <button onClick={() => handleUpdate(product.id)}>Update</button>
-              <button onClick={() => handleDelete(product.id)}>Delete</button>
+              <button
+                className="btn btn-primary"
+                onClick={() => handleUpdate(product.id)}
+              >
+                Update
+              </button>
+              <button
+                className="btn btn-danger"
+                onClick={() => handleDelete(product.id)}
+              >
+                Delete
+              </button>
             </li>
           ))}
         </ul>
@@ -131,4 +141,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default VendorProducts;

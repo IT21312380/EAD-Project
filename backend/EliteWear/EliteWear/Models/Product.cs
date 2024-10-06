@@ -4,8 +4,7 @@ namespace EliteWear.Models
 {
     public class Product
     {
-        // Static variable to keep track of the last used ID (not thread-safe)
-        private static int _lastId;
+
 
         [BsonId]
         public int Id { get; set; }
@@ -29,9 +28,6 @@ namespace EliteWear.Models
         }
 
         // Method to get the next ID
-        private static int GetNextId()
-        {
-            return ++_lastId; // Increment and return the next ID
-        }
+
     }
 }
