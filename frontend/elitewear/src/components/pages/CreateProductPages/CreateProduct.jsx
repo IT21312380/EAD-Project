@@ -17,6 +17,10 @@ const CreateProduct = () => {
   });
   const [image, setImage] = useState(null);
 
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+  const currentVendorId = currentUser?.vendor?.vendorId;
+  console.log(currentVendorId);
+
   const categories = [
     "Computers",
     "Computer Components",
@@ -69,7 +73,7 @@ const CreateProduct = () => {
         price: parseFloat(product.price),
         category: product.category,
         quantity: parseInt(product.quantity),
-        vendorId: parseInt(product.vendorId),
+        vendorId: parseInt(currentVendorId),
         status: "Pending",
         imageUrl: imageUrl,
       });
@@ -164,17 +168,6 @@ const CreateProduct = () => {
             name="quantity"
             className="form-input"
             value={product.quantity}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label className="form-label">Vendor ID</label>
-          <input
-            type="number"
-            name="vendorId"
-            className="form-input"
-            value={product.vendorId}
             onChange={handleChange}
             required
           />
