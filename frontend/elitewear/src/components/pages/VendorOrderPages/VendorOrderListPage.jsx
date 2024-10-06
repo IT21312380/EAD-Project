@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import SearchAndFilter from "../../common/searchAndFilter/SearchAndFilter";
+import "./VendorOrderList.css";
 
 const VendorOrderListPage = () => {
   const [orders, setOrders] = useState([]);
@@ -102,16 +103,16 @@ const VendorOrderListPage = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="vendor-order-loading">Loading...</div>;
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return <div className="vendor-order-error">{error}</div>;
   }
 
   return (
-    <div>
-      <h2>Order List</h2>
+    <div className="vendor-order-container">
+      <h2 className="vendor-order-title">Order List</h2>
       <SearchAndFilter
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -120,11 +121,11 @@ const VendorOrderListPage = () => {
         setSelectedCategory={setSelectedCategory}
       />
       {filteredOrders.length === 0 ? (
-        <p>No orders found for this user.</p>
+        <p className="vendor-order-empty">No orders found for this user.</p>
       ) : (
-        <table border="1" cellPadding="5" cellSpacing="0">
+        <table className="vendor-order-table">
           <thead>
-            <tr>
+            <tr className="vendor-order-header">
               <th>Order ID</th>
               <th>User ID</th>
               <th>Items</th>
@@ -139,18 +140,19 @@ const VendorOrderListPage = () => {
               );
 
               return (
-                <tr key={order.id}>
+                <tr key={order.id} className="vendor-order-row">
                   <td>{order.id}</td>
                   <td>{order.userId}</td>
                   <td>
-                    <ul>
+                    <ul className="vendor-order-items">
                       {itemsForCurrentUser.map((item) => (
-                        <li key={item.id}>
+                        <li key={item.id} className="vendor-order-item">
                           {item.name} (Qty: {item.qty}) -{" "}
                           <strong>{item.status}</strong>
                           <br />
                           <select
-                            value={selectedStatus[(item.id, order)]}
+                            className="vendor-order-status-select"
+                            value={selectedStatus[item.id] || ""}
                             onChange={(e) =>
                               handleItemStatusChange(item.id, e.target.value)
                             }
@@ -162,6 +164,7 @@ const VendorOrderListPage = () => {
                             <option value="Delivered">Delivered</option>
                           </select>
                           <button
+                            className="vendor-order-update-button"
                             onClick={() => updateItemStatus(order.id, item.id)}
                           >
                             Update Item Status
