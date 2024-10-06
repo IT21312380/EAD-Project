@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./VendorProducts.css";
-import { computeHeadingLevel } from "@testing-library/react";
 
 const VendorProducts = () => {
   const [products, setProducts] = useState([]);
