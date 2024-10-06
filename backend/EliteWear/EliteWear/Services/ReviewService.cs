@@ -17,6 +17,11 @@ namespace EliteWear.Services
             return await _context.Reviews.Find(review => true).ToListAsync();
         }
 
+        public async Task<List<Review>> GetReviewsByVendorIdAsync(int vendorID)
+        {
+            return await _context.Reviews.Find(review => review.VendorID == vendorID).ToListAsync();
+        }
+
         public async Task<Review?> GetReviewByIdAsync(int id)
         {
             return await _context.Reviews.Find(review => review.Id == id).FirstOrDefaultAsync();
