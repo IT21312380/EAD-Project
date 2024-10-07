@@ -1,15 +1,27 @@
 import React, { useState } from "react";
 import { useCSRLogin } from "../../../hooks/useCSRLogin";
 import "./CSRLogin.css"; // Import the CSS file
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { setUserRole } from "../../../hooks/useRoles";
 
 function CSRLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { login, error, isLoading } = useCSRLogin();
+  const navigate = useNavigate(); // Initialize navigate
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await login(username, password);
+    
+    // Attempt login and get success status
+    const loginSuccess = await login(username, password);
+
+    // Navigate only if login was successful
+    if (loginSuccess) {
+      const role = "csr"; // Set user role for CSR
+      setUserRole(role);  // Set global user role
+      navigate("/csr-orders"); // Redirect to the CSR orders page
+    }
   };
 
   return (

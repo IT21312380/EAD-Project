@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./VendorProducts.css";
+import VendorNavBar from "../../common/vendorNavBar/VendorNavBar";
+
 
 const VendorProducts = () => {
   const [products, setProducts] = useState([]);
@@ -72,6 +74,8 @@ const VendorProducts = () => {
   });
 
   return (
+    <div>
+    <VendorNavBar/>
     <div className="vendor-products-container">
       <h2 className="vendor-products-title">Products</h2>
 
@@ -147,6 +151,7 @@ const VendorProducts = () => {
           ))}
         </ul>
       )}
+    </div>
     </div>
   );
 };

@@ -2,6 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import SearchAndFilter from "../../common/searchAndFilter/SearchAndFilter";
 import "./CSROrderList.css"; // Import CSS
+import AdminNavBar from "../../common/adminNavBar/AdminNavBar";
+import CSRNavBar from "../../common/csrNavBar/CSRNavBar"; // Import CSR NavBar
+import { useAuthContext } from "../../../hooks/useAutContext"; // Import the AuthContext
+import { getUserRole } from "../../../hooks/useRoles"; // Import the global state
+
 
 const CSROrderList = () => {
   const [orders, setOrders] = useState([]);
@@ -11,6 +16,8 @@ const CSROrderList = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [categories, setCategories] = useState([]);
+  const { user } = useAuthContext(); // Get the user object from the context
+  const userRole = getUserRole(); // Get the current user role
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -114,6 +121,9 @@ const CSROrderList = () => {
   }
 
   return (
+    <div>
+       {userRole === "admin0000" && <AdminNavBar />}
+       {userRole === "csr" && <CSRNavBar />}
     <div className="csr-order-container">
       <h2 className="csr-order-title">Order List</h2>
       <SearchAndFilter
@@ -180,6 +190,7 @@ const CSROrderList = () => {
           </tbody>
         </table>
       )}
+    </div>
     </div>
   );
 };
