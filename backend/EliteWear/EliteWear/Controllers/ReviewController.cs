@@ -37,6 +37,15 @@ public class ReviewController : ControllerBase
         return Ok(review);
     }
 
+    [HttpGet("user/{name}")]
+    public async Task<IActionResult> GetReviewsByUserNameAsync(string name)
+    {
+        var review = await _reviewService.GetReviewsByUserNameAsync(name);
+        if (review == null)
+            return NotFound();
+        return Ok(review);
+    }
+
 
 
     [HttpPost]
