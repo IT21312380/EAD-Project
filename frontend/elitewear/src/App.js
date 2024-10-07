@@ -12,7 +12,7 @@ import VendorProfile from "./components/pages/VendorProfilePages/VendorProfilePa
 import RegisterVendor from "./components/pages/RegisterVendorPages/RegisterVendor";
 import AllUsers from "./components/pages/AllUsersPages/AllUsers";
 import UpdateVendorProfile from "./components/pages/VendorUpdatePages/VendorUpdatePage";
-
+import AllVendors from "./components/pages/AllVendors/AllVendors";
 import UpdateProduct from "./components/pages/UpdateProduct/UpdateProduct";
 import VendorOrderListPage from "./components/pages/VendorOrderPages/VendorOrderListPage";
 import CSROrderList from "./components/pages/CSROrderPages/CSROrderList";
@@ -26,7 +26,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/add-product" element={<CreateProduct />} />
-
+        <Route path="/all-vendors" element={<AllVendors />} />
         <Route path="/" element={<VendorProducts />} />
         <Route path="/vendor-login" element={<VendorLogin />} />
         <Route path="/admin-login" element={<AdminLogin />} />

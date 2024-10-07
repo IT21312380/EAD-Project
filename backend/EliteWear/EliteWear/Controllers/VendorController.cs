@@ -31,7 +31,7 @@ public class VendorController : ControllerBase
             return Unauthorized(new { error = "Invalid username or password." });
 
         // Return a JSON object instead of a plain string
-        return Ok(new {vendor});
+        return Ok(new { vendor });
     }
 
     [HttpPut("{id}")]
@@ -54,6 +54,13 @@ public class VendorController : ControllerBase
         var vendor = await _vendorService.GetVendorByIdAsync(id);
         if (vendor == null)
             return NotFound();
+        return Ok(vendor);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetVenddors()
+    {
+        var vendor = await _vendorService.GetVendorsAsync();
         return Ok(vendor);
     }
 

@@ -9,6 +9,8 @@ nav{
     align-items: center;
     justify-content: space-between;
     z-index: 10;
+    height: 60px; /* Set height for the navbar */
+    margin-bottom: 20px; /* Add margin to the bottom to create space */
 }
 
 .title-link{

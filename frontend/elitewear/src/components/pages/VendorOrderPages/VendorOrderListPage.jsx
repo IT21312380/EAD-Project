@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import SearchAndFilter from "../../common/searchAndFilter/SearchAndFilter";
 import "./VendorOrderList.css";
+import VendorNavBar from "../../common/vendorNavBar/VendorNavBar";
 
 const VendorOrderListPage = () => {
   const [orders, setOrders] = useState([]);
@@ -111,6 +112,8 @@ const VendorOrderListPage = () => {
   }
 
   return (
+    <div>
+    <VendorNavBar/>
     <div className="vendor-order-container">
       <h2 className="vendor-order-title">Order List</h2>
       <SearchAndFilter
@@ -181,6 +184,7 @@ const VendorOrderListPage = () => {
           </tbody>
         </table>
       )}
+    </div>
     </div>
   );
 };
