@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./AdminProductPage.css"; // Import custom CSS for styling
+import AdminNavBar from "../../common/adminNavBar/AdminNavBar";
 
 const AdminProductPage = () => {
   const [products, setProducts] = useState([]);
@@ -15,12 +16,12 @@ const AdminProductPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:5133/api/product");
-        setProducts(response.data);
+         const response = await axios.get("http://localhost:5133/api/product");
+         setProducts(response.data);
         const uniqueCategories = [
-          ...new Set(response.data.map((product) => product.category)),
-        ];
-        setCategories(uniqueCategories);
+           ...new Set(response.data.map((product) => product.category)),
+         ];
+         setCategories(uniqueCategories);
       } catch (err) {
         setError("Failed to fetch products.");
       } finally {
@@ -42,8 +43,19 @@ const AdminProductPage = () => {
     }
   };
 
-  const handleUpdate = (id) => {
-    navigate(`/update-product/${id}`);
+  const handleActivate = async (id) => {
+    try {
+      await axios.put(`http://localhost:5133/api/product/activate/${id}`);
+      setProducts(
+        products.map((product) =>
+          product.id === id ? { ...product, status: "Active" } : product
+        )
+      );
+      alert("Product activated successfully.");
+    } catch (err) {
+      console.error("Failed to activate product:", err);
+      alert("Failed to activate product.");
+    }
   };
 
   if (loading) {
@@ -55,6 +67,8 @@ const AdminProductPage = () => {
   }
 
   return (
+    <div>
+    <AdminNavBar/>
     <div className="admin-product-page">
       <h2>Admin Inventory</h2>
 
@@ -97,11 +111,11 @@ const AdminProductPage = () => {
               <div className="product-details">
                 <h3 className="product-name">{product.name}</h3>
                 <p className="product-description"> {product.description}</p>
-                <p className="product-price-tag ">
+                <p className="product-price-tag">
                   Price:{" "}
                   <span className="product-price"> ${product.price}</span>
                 </p>
-                <p className="product-price-tag ">
+                <p className="product-price-tag">
                   Category:
                   <span className="product-price"> {product.category}</span>
                 </p>
@@ -116,9 +130,13 @@ const AdminProductPage = () => {
                   </span>
                 </p>
 
-                <p className="product-price-tag ">
+                <p className="product-price-tag">
                   Vendor ID:
                   <span className="product-price"> {product.vendorId}</span>
+                </p>
+
+                <p className="product-price-tag">
+                  Status: <span>{product.status}</span>
                 </p>
 
                 <button
@@ -127,11 +145,19 @@ const AdminProductPage = () => {
                 >
                   Delete
                 </button>
+                <button
+                  className="btn btn-success activate-btn"
+                  onClick={() => handleActivate(product.id)}
+                  disabled={product.status === "Active"}
+                >
+                  {product.status === "Active" ? "Activated" : "Activate"}
+                </button>
               </div>
             </div>
           ))}
         </div>
       )}
+    </div>
     </div>
   );
 };

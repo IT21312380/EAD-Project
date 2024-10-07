@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "./VendorProducts.css";
 
 const VendorProducts = () => {
-  const [products, setProducts] = useState([]); // State to hold products
-  const [loading, setLoading] = useState(true); // State to handle loading status
-  const [error, setError] = useState(null); // State to handle error
-  const [searchQuery, setSearchQuery] = useState(""); // State for search query
-  const [selectedCategory, setSelectedCategory] = useState(""); // State for selected category
-  const [categories, setCategories] = useState([]); // State to hold categories
-  const navigate = useNavigate(); // Use to navigate to update page
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -21,7 +22,7 @@ const VendorProducts = () => {
         ];
         setCategories(uniqueCategories);
       } catch (err) {
-        setError("Failed to fetch products."); // Handle error
+        setError("Failed to fetch products.");
       } finally {
         setLoading(false);
       }
@@ -30,14 +31,14 @@ const VendorProducts = () => {
     fetchProducts();
   }, []);
 
-  // Get current user ID from local storage
-  // const currentUserId = localStorage.getItem("currentUserId");
-  const currentUserId = "1234";
+  // Get current user vendorId from local storage
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+  const currentVendorId = currentUser?.vendor?.vendorId;
+  console.log(currentVendorId);
 
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:5133/api/product/${id}`);
-      // Remove the deleted product from the state
       setProducts(products.filter((product) => product.id !== id));
       alert("Product deleted successfully.");
     } catch (err) {
@@ -46,22 +47,21 @@ const VendorProducts = () => {
     }
   };
 
-  // Navigate to update page
   const handleUpdate = (id) => {
     navigate(`/update-product/${id}`);
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="vendor-products-loading">Loading...</div>;
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return <div className="vendor-products-error">{error}</div>;
   }
 
-  // Filter products based on the current user ID (VendorId) and search query/category
+  // Filter products based on the current vendorId, search query, and category
   const filteredProducts = products.filter((product) => {
-    const matchesVendorId = product.vendorId === parseInt(currentUserId, 10); // Ensure to parse user ID to integer
+    const matchesVendorId = product.vendorId === currentVendorId;
     const matchesSearchQuery = product.name
       .toLowerCase()
       .includes(searchQuery.toLowerCase());
@@ -72,19 +72,19 @@ const VendorProducts = () => {
   });
 
   return (
-    <div>
-      <h2>Products</h2>
+    <div className="vendor-products-container">
+      <h2 className="vendor-products-title">Products</h2>
 
-      {/* Search Bar */}
       <input
         type="text"
+        className="vendor-products-search"
         placeholder="Search products..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
 
-      {/* Category Filter Dropdown */}
       <select
+        className="vendor-products-category"
         value={selectedCategory}
         onChange={(e) => setSelectedCategory(e.target.value)}
       >
@@ -97,42 +97,52 @@ const VendorProducts = () => {
       </select>
 
       {filteredProducts.length === 0 ? (
-        <p>No products found for this user.</p>
+        <p className="vendor-products-empty">
+          No products found for this user.
+        </p>
       ) : (
-        <ul>
+        <ul className="vendor-products-list">
           {filteredProducts.map((product) => (
-            <li key={product.id} style={{ marginBottom: "20px" }}>
+            <li key={product.id} className="vendor-product-item">
               {product.imageUrl && (
-                <div>
+                <div className="vendor-product-image-wrapper">
                   <img
                     src={product.imageUrl}
                     alt={product.name}
-                    style={{
-                      width: "150px",
-                      height: "150px",
-                      objectFit: "cover",
-                    }}
+                    className="vendor-product-image"
                   />
                 </div>
               )}
-              <h3>{product.name}</h3>
-              <p>{product.description}</p>
-              <p>Price: ${product.price}</p>
-              <p>Category: {product.category}</p>
-              <p>Quantity: {product.quantity}</p>
-              <p>Vendor ID: {product.vendorId}</p>
-              <button
-                className="btn btn-primary"
-                onClick={() => handleUpdate(product.id)}
-              >
-                Update
-              </button>
-              <button
-                className="btn btn-danger"
-                onClick={() => handleDelete(product.id)}
-              >
-                Delete
-              </button>
+              <div className="vendor-product-info">
+                <h3 className="vendor-product-name">{product.name}</h3>
+                <p className="vendor-product-description">
+                  {product.description}
+                </p>
+                <p className="vendor-product-price">Price: ${product.price}</p>
+                <p className="vendor-product-category">
+                  Category: {product.category}
+                </p>
+                <p className="vendor-product-quantity">
+                  Quantity: {product.quantity}
+                </p>
+                <p className="vendor-product-vendorId">
+                  Vendor ID: {product.vendorId}
+                </p>
+                <div className="vendor-product-actions">
+                  <button
+                    className="vendor-product-update-btn"
+                    onClick={() => handleUpdate(product.id)}
+                  >
+                    Update
+                  </button>
+                  <button
+                    className="vendor-product-delete-btn"
+                    onClick={() => handleDelete(product.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
             </li>
           ))}
         </ul>

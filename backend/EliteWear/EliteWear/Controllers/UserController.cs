@@ -16,7 +16,7 @@ public class UserController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterUserDto dto)
     {
-        if (!await _userService.RegisterUser(dto.Username, dto.Email, dto.Password, dto.State))
+        if (!await _userService.RegisterUser(dto.Username, dto.Email, dto.Password, dto.State, dto.Requested))
             return BadRequest("Username already exists.");
 
         return Ok("User registered successfully.");
@@ -82,6 +82,34 @@ public class UserController : ControllerBase
         return Ok("User has been activated.");
     }
 
+    [HttpPut("requested/{email}")]
+    public async Task<IActionResult> RequestUser(string email)
+    {
+        var result = await _userService.RequestedUserAsync(email);
+        if (!result)
+            return NotFound("User not found or could not be requested.");
+
+        return Ok("Request has been sent.");
+    }
+
+    [HttpPut("update/{email}")]
+    public async Task<IActionResult> EditUser(string email, [FromBody] User updatedUser)
+    {
+        var user = await _userService.GetUserByIdAsync(email);
+        if (user == null) return NotFound();
+
+        
+        user.Username = updatedUser.Username;
+        user.Email = updatedUser.Email; // Update the email
+        user.PasswordHash = updatedUser.PasswordHash;
+        user.State = updatedUser.State;
+        user.Requested = updatedUser.Requested;
+
+        await _userService.UpdateUserAsync(user.Id, user);
+
+        return NoContent();
+    }
+
 
 }
 
@@ -92,6 +120,8 @@ public class RegisterUserDto
     public string? Password { get; set; }
 
     public string? State { get; set; }
+
+    public string? Requested { get; set; }
 }
 
 public class LoginUserDto
