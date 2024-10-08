@@ -85,7 +85,7 @@ html, body {
     
 }
 /* Button styling */
-.btn-login {
+.welcome-btn-login {
     padding: 15px 30px;
     font-size: 20px;
     font-family: 'Poppins', sans-serif;
@@ -108,20 +108,20 @@ html, body {
     100% { transform: scale(1); }
 }
 /* Hover effect for all buttons */
-.btn-login:hover {
+.welcome-btn-login:hover {
     background: linear-gradient(45deg, #2980b9, #1f639e); /* Darker gradient on hover */
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Deeper shadow on hover */
     animation: pulse 0.5s ease-in-out; /* Pulsing effect on hover */
 }
 
 /* Focus style */
-.btn-login:focus {
+.welcome-btn-login:focus {
     outline: 3px solid #e63946; /* Outline color for focus state */
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .btn-login {
+    .welcome-btn-login {
         padding: 10px 20px;
         font-size: 14px;
         width: 100%; /* Full width on smaller screens */
@@ -134,7 +134,7 @@ html, body {
         font-size: 18px;
     }
 
-    .btn-login {
+    .welcome-btn-login {
         padding: 10px 20px;
         font-size: 14px;
         width: 100%; /* Full width on smaller screens */
