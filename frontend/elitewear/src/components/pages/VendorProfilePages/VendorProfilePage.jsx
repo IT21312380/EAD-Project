@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuthContext } from "../../../hooks/useAutContext";
 import "./VendorProfilePage.css";
 import VendorNavBar from "../../common/vendorNavBar/VendorNavBar";
+import Footer from "../../common/footer/Footer";
 
 const VendorProfile = () => {
   const [User, setUser] = useState(null);
@@ -25,6 +26,7 @@ const VendorProfile = () => {
   }, [user]);
 
   return (
+    <>
     <div>
     <VendorNavBar/>
     <div className="vendor-profile-container">
@@ -38,8 +40,14 @@ const VendorProfile = () => {
       </div>
 
       <div className="vendor-profile-details">
-        <p className="vendor-profile-info">Name: {User?.username ?? "null"}</p>
-        <p className="vendor-profile-info">Email: {User?.email ?? "null"}</p>
+      <h5 className="vendor-profile-info">
+          <strong>Name:</strong> <span>{User?.username ?? "null"}</span>
+      </h5>
+
+      <p className="vendor-profile-info">
+         <strong>Email:</strong> <span>{User?.email ?? "null"}</span>
+      </p>
+
       </div>
 
       <div className="vendor-profile-actions">
@@ -50,8 +58,12 @@ const VendorProfile = () => {
           <button className="vendor-profile-btn">My Reviews</button>
         </a>
       </div>
+      </div>
+      <br/>  <br/>  <br/>  <br/>  <br/>  <br/>  <br/>  <br/>
+      <Footer />
     </div>
-    </div>
+   
+    </>
   );
 };
 

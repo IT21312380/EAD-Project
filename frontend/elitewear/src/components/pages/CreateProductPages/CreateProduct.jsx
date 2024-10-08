@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./CreateProduct.css"; // Import the CSS file
+import VendorNavBar from "../../common/vendorNavBar/VendorNavBar";
 
 const CreateProduct = () => {
   // State to hold form data and image
@@ -98,6 +99,9 @@ const CreateProduct = () => {
   };
 
   return (
+    <>
+ <VendorNavBar/>    
+  
     <div className="create-product-container">
       <h2 className="create-product-title">Create Product</h2>
       <form onSubmit={handleSubmit} className="create-product-form">
@@ -186,6 +190,7 @@ const CreateProduct = () => {
         </button>
       </form>
     </div>
+    </>
   );
 };
 
