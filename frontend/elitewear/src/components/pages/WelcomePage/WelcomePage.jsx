@@ -22,7 +22,7 @@ const WelcomePage = () => {
     <div className="welcome-container">
       <img src="./Logo(3).png" alt="Company Logo" className="landing-logo" />
       <div className="welcome-content">
-        <h4 className="welcome-title">Welcome to EliteWear</h4>
+        <h4 className="welcome-title">Welcome to Phantom Computers</h4>
       </div>
       <div className="welcome-subtitle-container">
         <h4 className="welcome-subtitle">All your computer needs in a single place</h4>
