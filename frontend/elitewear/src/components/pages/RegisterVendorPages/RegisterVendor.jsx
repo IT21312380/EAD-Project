@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./RegisterVendor.css"; // Import CSS file
+import AdminNavBar from "../../common/adminNavBar/AdminNavBar";
 
 const RegisterVendor = () => {
   const [vendor, setVendor] = useState({
@@ -46,6 +47,8 @@ const RegisterVendor = () => {
   };
 
   return (
+    <div>
+      <AdminNavBar/>
     <div className="register-vendor-container">
       <h2 className="register-vendor-title">Create Profile</h2>
       <form className="register-vendor-form" onSubmit={handleSubmit}>
@@ -86,6 +89,7 @@ const RegisterVendor = () => {
           Register
         </button>
       </form>
+    </div>
     </div>
   );
 };

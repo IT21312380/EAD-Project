@@ -1,28 +1,26 @@
 import React, { useState } from "react";
 import { useAdminLogin } from "../../../hooks/useAdminLogin";
 import "./AdminLogin.css";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-import { setUserRole } from "../../../hooks/useRoles"; // Custom hook to set roles
+import { useNavigate } from "react-router-dom"; 
+import { setUserRole } from "../../../hooks/useRoles"; 
 
 function AdminLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { login, error, isLoading } = useAdminLogin(); // Use the hook
-  const navigate = useNavigate(); // Initialize navigate
+  const { login, error, isLoading } = useAdminLogin(); 
+  const navigate = useNavigate(); 
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent form refresh
+    e.preventDefault(); 
 
-    // Call the login function from the hook
+    
     const success =await login(username, password);
 
-    // If there's no error after login, navigate to the admin products page
+   
     if (success) {
-      navigate("/admin-products"); // Redirect to the admin products page
-
-      // Set the user role after successful login (role could be fetched from response if available)
-      const role = "admin0000"; // Use an actual role from login response if available
-      setUserRole(role); // Set global user role
+      navigate("/admin-products"); 
+      const role = "admin0000";
+      setUserRole(role); 
     }
   };
 
