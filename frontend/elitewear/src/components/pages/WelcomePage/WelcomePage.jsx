@@ -11,9 +11,9 @@ const WelcomePage = () => {
         <h4 className="welcome-subtitle">All your computer needs in a single place</h4>
       </div>
       <div className="welcome-buttons">
-        <button className="btn-login common-btn">Admin Login</button>
-        <button className="btn-login common-btn">CSR Login</button>
-        <button className="btn-login common-btn">Vendor Login</button>
+        <button className="welcome-btn-login common-btn">Admin Login</button>
+        <button className="welcome-btn-login common-btn">CSR Login</button>
+        <button className="welcome-btn-login common-btn">Vendor Login</button>
       </div>
     </div>
   );
