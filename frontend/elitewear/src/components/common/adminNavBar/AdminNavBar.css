@@ -3,7 +3,7 @@
     width: 100%;
     background-color: #07012d;
     padding: 10px 20px;
-    position: fixed;
+    position: relative;
     top: 0;
     left: 0;
     display: flex;
@@ -60,6 +60,10 @@
     transition: color 0.3s ease-in-out;
 }
 
+.admin-logo{
+    width: 200px;
+    margin-bottom: 20px;
+}
 /* Hover effect: underline from left to right */
 .admin-nav-btn::after {
     content: "";
@@ -115,6 +119,7 @@
 .admin-logout-btn:hover::after {
     width: 100%; /* Expands underline on hover */
 }
+
 
 
 /* Add spacing below navbar so content isn't hidden */

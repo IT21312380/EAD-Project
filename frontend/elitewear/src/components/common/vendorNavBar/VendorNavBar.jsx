@@ -15,10 +15,7 @@ const VendorNavBar = () => {
 
     return (
         <nav className='vendor-navcontainer'>
-           <Link to="/Home" className='vendor-title-link'>
-                <h1 className='csr-title' style={{ fontStyle: "'Press Start 2P','consolas','sans-serif'" }}>EliteWear</h1>
-                <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"></link>
-            </Link>
+           <img src="./Logo(3).png" alt="Company Logo" className='vendor-logo' />
 
             <ul className='vendor-nav-links'>
                 <li>

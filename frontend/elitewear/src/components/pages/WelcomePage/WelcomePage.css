@@ -15,6 +15,7 @@ html, body {
     align-items: center;
     position: relative; /* For placing overlay content */
     overflow: hidden; /* To hide the overflowing images */
+    background-color: transparent; /* Set the background color to transparent */
 }
 
 /* Background slider animation */
@@ -23,7 +24,6 @@ html, body {
     33% { background-image: url('../../../assets/desktop-computer-peripherals-j96hknynuwlmz48m.jpg'); }
     66% { background-image: url('../../../assets/flat-design-with-headphones-and-laptop-illustration-ai-generative-free-photo.jpg'); }
     100% { background-image: url('../../../assets/COMPUTER-accessories.jpg'); }
-    /* Loop back to first image */
 }
 
 /* Apply background images with the animation */
@@ -35,16 +35,13 @@ html, body {
     width: 100%;
 }
 
-/* Add a dark semi-transparent overlay to reduce contrast */
-.welcome-container::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
-    z-index: 1; /* Ensure it covers the background images */
+
+
+/* Logo styling */
+.landing-logo {
+    margin-top: -150px; 
+    position: relative; 
+    z-index: 3; /* Ensure the logo is above the background */
 }
 
 /* Overlay content styling */
@@ -82,8 +79,8 @@ html, body {
     display: flex;
     flex-direction: column; /* Places buttons in separate lines */
     gap: 20px; /* Space between buttons */
-    
 }
+
 /* Button styling */
 .welcome-btn-login {
     padding: 15px 30px;
@@ -93,8 +90,7 @@ html, body {
     cursor: pointer;
     border: none;
     border-radius: 10px; /* Increased border radius for a softer look */
-    background: linear-gradient(45deg, #4d6a7c, #435d6e);  /*Gradient background */
-    
+    background: linear-gradient(45deg, #4d6a7c, #435d6e); /* Gradient background */
     color: #fffcfc;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
     width: 400px; /* Set a fixed width for buttons */
@@ -102,11 +98,6 @@ html, body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Added shadow for a lifted effect */
 }
 
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
 /* Hover effect for all buttons */
 .welcome-btn-login:hover {
     background: linear-gradient(45deg, #2980b9, #1f639e); /* Darker gradient on hover */

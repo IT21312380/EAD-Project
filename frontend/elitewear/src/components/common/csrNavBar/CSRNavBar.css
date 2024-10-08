@@ -3,7 +3,7 @@
     width: 100%;
     background-color: #07012d;
     padding: 10px 20px;
-    position: fixed;
+    position: relative;
     top: 0;
     left: 0;
     display: flex;
@@ -14,7 +14,10 @@
     font-family: 'Poppins', sans-serif;
 }
 
-
+.csr-logo{
+    width: 200px;
+    margin-bottom: 20px;
+}
 
 /* Title link */
 .csr-title-link {

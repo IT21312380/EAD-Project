@@ -80,82 +80,75 @@ const VendorProducts = () => {
     <div>
     <VendorNavBar/>
     <div className="vendor-products-container">
-      <h2 className="vendor-products-title">Products</h2>
+  <h2 className="vendor-products-title">My Products</h2>
 
+  {/* Search and Filter section */}
+  <div className="search-filter-container">
+    {/* Search bar */}
+    <div className="search-bar">
       <input
         type="text"
-        className="vendor-products-search"
         placeholder="Search products..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
-
-      <select
-        className="vendor-products-category"
-        value={selectedCategory}
-        onChange={(e) => setSelectedCategory(e.target.value)}
-      >
-        <option value="">All Categories</option>
-        {categories.map((category, index) => (
-          <option key={index} value={category}>
-            {category}
-          </option>
-        ))}
-      </select>
-      <button onClick={handleAddProduct}>Add Product</button>
-
-      {filteredProducts.length === 0 ? (
-        <p className="vendor-products-empty">
-          No products found for this user.
-        </p>
-        ) : (
-        <ul className="vendor-products-list">
-          {filteredProducts.map((product) => (
-            <li key={product.id} className="vendor-product-item">
-              {product.imageUrl && (
-                <div className="vendor-product-image-wrapper">
-                  <img
-                    src={product.imageUrl}
-                    alt={product.name}
-                    className="vendor-product-image"
-                  />
-                </div>
-              )}
-              <div className="vendor-product-info">
-                <h3 className="vendor-product-name">{product.name}</h3>
-                <p className="vendor-product-description">
-                  {product.description}
-                </p>
-                <p className="vendor-product-price">Price: ${product.price}</p>
-                <p className="vendor-product-category">
-                  Category: {product.category}
-                </p>
-                <p className="vendor-product-quantity">
-                  Quantity: {product.quantity}
-                </p>
-                <p className="vendor-product-vendorId">
-                  Vendor ID: {product.vendorId}
-                </p>
-                <div className="vendor-product-actions">
-                  <button
-                    className="vendor-product-update-btn"
-                    onClick={() => handleUpdate(product.id)}
-                  >
-                    Update
-                  </button>
-                  <button
-                    className="vendor-product-delete-btn"
-                    onClick={() => handleDelete(product.id)}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
+      <button>
+        <i className="fa fa-search"></i>
+      </button>
     </div>
+
+    {/* Category dropdown */}
+    <select
+      className="category-dropdown"
+      value={selectedCategory}
+      onChange={(e) => setSelectedCategory(e.target.value)}
+    >
+      <option value="">All Categories</option>
+      {categories.map((category) => (
+        <option key={category} value={category}>
+          {category}
+        </option>
+      ))}
+    </select>
+  </div>
+  
+  <button className="add-product-btn" onClick={handleAddProduct}>Add Product</button>
+
+  {filteredProducts.length === 0 ? (
+    <p className="vendor-products-empty">No products found for this user.</p>
+  ) : (
+    <div className="row">
+      {filteredProducts.map((product) => (
+        <div key={product.id} className="col-12 col-md-6 col-lg-4 mb-4"> {/* Adjust the column classes as needed */}
+          <div className="vendor-product-item">
+            {product.imageUrl && (
+              <div className="vendor-product-image-wrapper">
+                <img
+                  src={product.imageUrl}
+                  alt={product.name}
+                  className="vendor-product-image"
+                />
+              </div>
+            )}
+            <div className="vendor-product-info">
+              <h3 className="vendor-product-name">{product.name}</h3>
+              <p className="vendor-product-description">{product.description}</p>
+              <p className="vendor-product-price">Price: ${product.price}</p>
+              <p className="vendor-product-category">Category: {product.category}</p>
+              <p className="vendor-product-quantity">Quantity: {product.quantity}</p>
+              <p className="vendor-product-vendorId">Vendor ID: {product.vendorId}</p>
+              <div className="vendor-product-actions">
+                <button className="vendor-product-update-btn" onClick={() => handleUpdate(product.id)}>Update</button>
+                <button className="vendor-product-delete-btn" onClick={() => handleDelete(product.id)}>Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
     </div>
   );
 };
