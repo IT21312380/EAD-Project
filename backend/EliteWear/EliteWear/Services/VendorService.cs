@@ -27,7 +27,7 @@ namespace EliteWear.Services
 
             var vendor = new Vendor
             {
-                VendorId= await GetNextOrderIdAsync(),
+                VendorId = await GetNextOrderIdAsync(),
                 Username = username,
                 Email = email,
                 PasswordHash = HashPassword(password)
@@ -84,7 +84,12 @@ namespace EliteWear.Services
 
         public async Task<Vendor?> GetVendorByIdAsync(string id)
         {
-            return await _context.Vendor.Find(user => user.Id == id).FirstOrDefaultAsync();
+            return await _context.Vendor.Find(vendor => vendor.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<List<Vendor>> GetVendorsAsync()
+        {
+            return await _context.Vendor.Find(vendor => true).ToListAsync();
         }
     }
 }

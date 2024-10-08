@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./VendorProducts.css";
+import VendorNavBar from "../../common/vendorNavBar/VendorNavBar";
+
 
 const VendorProducts = () => {
   const [products, setProducts] = useState([]);
@@ -70,8 +72,13 @@ const VendorProducts = () => {
       : true;
     return matchesVendorId && matchesSearchQuery && matchesCategory;
   });
+  const handleAddProduct = () => {
+    navigate("/add-product");
+  };
 
   return (
+    <div>
+    <VendorNavBar/>
     <div className="vendor-products-container">
       <h2 className="vendor-products-title">Products</h2>
 
@@ -95,12 +102,13 @@ const VendorProducts = () => {
           </option>
         ))}
       </select>
+      <button onClick={handleAddProduct}>Add Product</button>
 
       {filteredProducts.length === 0 ? (
         <p className="vendor-products-empty">
           No products found for this user.
         </p>
-      ) : (
+        ) : (
         <ul className="vendor-products-list">
           {filteredProducts.map((product) => (
             <li key={product.id} className="vendor-product-item">
@@ -147,6 +155,7 @@ const VendorProducts = () => {
           ))}
         </ul>
       )}
+    </div>
     </div>
   );
 };

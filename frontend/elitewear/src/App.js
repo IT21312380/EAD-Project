@@ -12,22 +12,24 @@ import VendorProfile from "./components/pages/VendorProfilePages/VendorProfilePa
 import RegisterVendor from "./components/pages/RegisterVendorPages/RegisterVendor";
 import AllUsers from "./components/pages/AllUsersPages/AllUsers";
 import UpdateVendorProfile from "./components/pages/VendorUpdatePages/VendorUpdatePage";
-
+import AllVendors from "./components/pages/AllVendors/AllVendors";
 import UpdateProduct from "./components/pages/UpdateProduct/UpdateProduct";
 import VendorOrderListPage from "./components/pages/VendorOrderPages/VendorOrderListPage";
 import CSROrderList from "./components/pages/CSROrderPages/CSROrderList";
 import CSRNotificationList from "./components/pages/CSRNotificationPages/CSRNotificationList";
 import VendorNotifications from "./components/pages/VendorNotificationsPages/VendorNotifications";
 import AdminProductPage from "./components/pages/AdminProductPages/AdminProductPage";
+import WelcomePage from "./components/pages/WelcomePage/WelcomePage";
 
 function App() {
   const { user } = useAuthContext();
   return (
     <Router>
       <Routes>
+      <Route path="/" element={<WelcomePage />} />
         <Route path="/add-product" element={<CreateProduct />} />
-
-        <Route path="/" element={<VendorProducts />} />
+        <Route path="/all-vendors" element={<AllVendors />} />
+        <Route path="/vendor-products" element={<VendorProducts />} />
         <Route path="/vendor-login" element={<VendorLogin />} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/admin-products" element={<AdminProductPage />} />

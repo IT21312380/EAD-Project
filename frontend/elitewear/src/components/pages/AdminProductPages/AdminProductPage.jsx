@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./AdminProductPage.css"; // Import custom CSS for styling
 import AdminNavBar from "../../common/adminNavBar/AdminNavBar";
+import Footer from "../../common/footer/Footer";
 
 const AdminProductPage = () => {
   const [products, setProducts] = useState([]);
@@ -16,12 +17,12 @@ const AdminProductPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-         const response = await axios.get("http://localhost:5133/api/product");
-         setProducts(response.data);
+        const response = await axios.get("http://localhost:5133/api/product");
+        setProducts(response.data);
         const uniqueCategories = [
-           ...new Set(response.data.map((product) => product.category)),
-         ];
-         setCategories(uniqueCategories);
+          ...new Set(response.data.map((product) => product.category)),
+        ];
+        setCategories(uniqueCategories);
       } catch (err) {
         setError("Failed to fetch products.");
       } finally {
@@ -68,96 +69,101 @@ const AdminProductPage = () => {
 
   return (
     <div>
+
     <AdminNavBar/>
     <div className="admin-product-page">
-      <h2>Admin Inventory</h2>
+      
 
-      {/* Search Bar */}
-      <input
-        type="text"
-        placeholder="Search products..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        className="search-bar"
-      />
 
-      {/* Category Filter Dropdown */}
-      <select
-        value={selectedCategory}
-        onChange={(e) => setSelectedCategory(e.target.value)}
-        className="category-dropdown"
-      >
-        <option value="">All Categories</option>
-        {categories.map((category, index) => (
-          <option key={index} value={category}>
-            {category}
-          </option>
-        ))}
-      </select>
+        {/* Search Bar */}
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="search-bar"
+        />
 
-      {products.length === 0 ? (
-        <p>No products found for this user.</p>
-      ) : (
-        <div className="product-grid">
-          {products.map((product) => (
-            <div key={product.id} className="product-card">
-              {product.imageUrl && (
-                <img
-                  src={product.imageUrl}
-                  alt={product.name}
-                  className="product-image"
-                />
-              )}
-              <div className="product-details">
-                <h3 className="product-name">{product.name}</h3>
-                <p className="product-description"> {product.description}</p>
-                <p className="product-price-tag">
-                  Price:{" "}
-                  <span className="product-price"> ${product.price}</span>
-                </p>
-                <p className="product-price-tag">
-                  Category:
-                  <span className="product-price"> {product.category}</span>
-                </p>
-                <p className="product-price-tag">
-                  Quantity:
-                  <span
-                    className={product.quantity < 10 ? "low-stock" : "in-stock"}
-                  >
-                    {product.quantity < 10
-                      ? `Low Stock (${product.quantity})`
-                      : product.quantity}
-                  </span>
-                </p>
-
-                <p className="product-price-tag">
-                  Vendor ID:
-                  <span className="product-price"> {product.vendorId}</span>
-                </p>
-
-                <p className="product-price-tag">
-                  Status: <span>{product.status}</span>
-                </p>
-
-                <button
-                  className="btn btn-danger delete-btn"
-                  onClick={() => handleDelete(product.id)}
-                >
-                  Delete
-                </button>
-                <button
-                  className="btn btn-success activate-btn"
-                  onClick={() => handleActivate(product.id)}
-                  disabled={product.status === "Active"}
-                >
-                  {product.status === "Active" ? "Activated" : "Activate"}
-                </button>
-              </div>
-            </div>
+        {/* Category Filter Dropdown */}
+        <select
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          className="category-dropdown"
+        >
+          <option value="">All Categories</option>
+          {categories.map((category, index) => (
+            <option key={index} value={category}>
+              {category}
+            </option>
           ))}
-        </div>
-      )}
-    </div>
+        </select>
+
+        {products.length === 0 ? (
+          <p>No products found for this user.</p>
+        ) : (
+          <div className="product-grid">
+            {products.map((product) => (
+              <div key={product.id} className="product-card">
+                {product.imageUrl && (
+                  <img
+                    src={product.imageUrl}
+                    alt={product.name}
+                    className="product-image"
+                  />
+                )}
+                <div className="product-details">
+                  <h3 className="product-name">{product.name}</h3>
+                  <p className="product-description"> {product.description}</p>
+                  <p className="product-price-tag">
+                    Price:{" "}
+                    <span className="product-price"> ${product.price}</span>
+                  </p>
+                  <p className="product-price-tag">
+                    Category:
+                    <span className="product-price"> {product.category}</span>
+                  </p>
+                  <p className="product-price-tag">
+                    Quantity:
+                    <span
+                      className={
+                        product.quantity < 10 ? "low-stock" : "in-stock"
+                      }
+                    >
+                      {product.quantity < 10
+                        ? `Low Stock (${product.quantity})`
+                        : product.quantity}
+                    </span>
+                  </p>
+
+                  <p className="product-price-tag">
+                    Vendor ID:
+                    <span className="product-price"> {product.vendorId}</span>
+                  </p>
+
+                  <p className="product-price-tag">
+                    Status: <span>{product.status}</span>
+                  </p>
+
+                  <button
+                    className="btn btn-danger delete-btn"
+                    onClick={() => handleDelete(product.id)}
+                  >
+                    Delete
+                  </button>
+                  <button
+                    className="btn btn-success activate-btn"
+                    onClick={() => handleActivate(product.id)}
+                    disabled={product.status === "Active"}
+                  >
+                    {product.status === "Active" ? "Activated" : "Activate"}
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      <Footer />
     </div>
   );
 };

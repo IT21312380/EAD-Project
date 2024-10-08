@@ -11,9 +11,13 @@ function VendorLogin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await login(email, password);
-    navigate("/");
-    
+    const loginSuccess = await login(email, password);
+
+    // Navigate only if login was successful
+    if (loginSuccess) {
+      
+      navigate("/vendor-products"); // Redirect to the CSR orders page
+    }
   };
 
   return (

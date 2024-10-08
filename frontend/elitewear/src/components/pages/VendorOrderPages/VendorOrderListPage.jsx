@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import SearchAndFilter from "../../common/searchAndFilter/SearchAndFilter";
 import "./VendorOrderList.css";
+import VendorNavBar from "../../common/vendorNavBar/VendorNavBar";
 
 const VendorOrderListPage = () => {
   const [orders, setOrders] = useState([]);
@@ -13,7 +14,12 @@ const VendorOrderListPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [categories, setCategories] = useState([]);
 
-  const currentUserId = "1234"; // This should ideally come from user authentication context
+  //const currentUserId = "1234"; // This should ideally come from user authentication context
+
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+    const currentUserId = currentUser?.vendor?.vendorId;
+    console.log("current",currentUserId);
+   
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -111,6 +117,8 @@ const VendorOrderListPage = () => {
   }
 
   return (
+    <div>
+    <VendorNavBar/>
     <div className="vendor-order-container">
       <h2 className="vendor-order-title">Order List</h2>
       <SearchAndFilter
@@ -181,6 +189,7 @@ const VendorOrderListPage = () => {
           </tbody>
         </table>
       )}
+    </div>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./VendorNotifications.css"; // Import the CSS file
+import VendorNavBar from "../../common/vendorNavBar/VendorNavBar";
 
 const VendorNotifications = () => {
   const [notifications, setNotifications] = useState([]);
@@ -37,6 +38,8 @@ const VendorNotifications = () => {
   }
 
   return (
+    <div>
+    <VendorNavBar/>
     <div className="vendor-notifications-container">
       <h2 className="vendor-notifications-title">Notifications For Vendor</h2>
       {notifications.length === 0 ? (
@@ -77,6 +80,7 @@ const VendorNotifications = () => {
           </tbody>
         </table>
       )}
+    </div>
     </div>
   );
 };
