@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import './AllVendors.css';
 import AdminNavBar from "../../common/adminNavBar/AdminNavBar";
+import Footer from "../../common/footer/Footer";
 
 function AllVendors() {
   const [vendors, setVendors] = useState([]);
@@ -56,6 +57,7 @@ function AllVendors() {
           </tbody>
         </table>
       </div>
+      <Footer/>
     </div>
   );
 }

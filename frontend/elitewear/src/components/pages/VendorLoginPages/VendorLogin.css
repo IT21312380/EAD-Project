@@ -2,6 +2,7 @@
 .vendor-login-container {
   max-width: 400px; /* Set max width for the form */
   margin: 0 auto; /* Center the form */
+  margin-top: 300px;
   padding: 20px; /* Add padding */
   background-color: #f9f9f9; /* Light background color */
   border-radius: 8px; /* Rounded corners */

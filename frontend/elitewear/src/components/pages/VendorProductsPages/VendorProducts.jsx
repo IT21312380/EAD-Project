@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./VendorProducts.css";
 import VendorNavBar from "../../common/vendorNavBar/VendorNavBar";
+import Footer from "../../common/footer/Footer";
 
 
 const VendorProducts = () => {
@@ -148,7 +149,7 @@ const VendorProducts = () => {
     </div>
   )}
 </div>
-
+<Footer />
     </div>
   );
 };
