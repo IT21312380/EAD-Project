@@ -14,19 +14,19 @@ const AdminNavBar = () => {
     };
 
     return (
-        <nav className='navcontainer'>
-            <img src='' alt="" className='logo' />
-            <Link to="/Home" className='title-link'>
-                <h1 className='title' style={{ fontStyle: "'Press Start 2P','consolas','sans-serif'" }}>EliteWear</h1>
+        <nav className='admin-navbar'>
+            
+            <Link to="/Home" className='admin-title-link'>
+                <h1 className='admin-title'>EliteWear</h1>
                 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"></link>
             </Link>
 
-            <ul>
-                <li><button className='btn' onClick={() => navigate('/admin-products')}>Inventory</button></li>
-                <li><button className='btn' onClick={() => navigate('/all-users')}>Users</button></li>
-                <li><button className='btn' onClick={() => navigate('/csr-orders')}>Orders</button></li>
-                <li><button className='btn' onClick={() => navigate('/all-vendors')}>Vendors</button></li>
-                <li><button className='btn' onClick={handleLogoutClick}>LOGOUT</button></li>
+            <ul className='admin-nav-links'>
+                <li><button className='admin-nav-btn' onClick={() => navigate('/admin-products')}>Inventory</button></li>
+                <li><button className='admin-nav-btn' onClick={() => navigate('/all-users')}>Users</button></li>
+                <li><button className='admin-nav-btn' onClick={() => navigate('/csr-orders')}>Orders</button></li>
+                <li><button className='admin-nav-btn' onClick={() => navigate('/all-vendors')}>Vendors</button></li>
+                <li><button className='admin-logout-btn' onClick={handleLogoutClick}>LOGOUT</button></li>
             </ul>
         </nav>
     );

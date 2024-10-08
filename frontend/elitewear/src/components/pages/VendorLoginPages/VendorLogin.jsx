@@ -16,7 +16,7 @@ function VendorLogin() {
     // Navigate only if login was successful
     if (loginSuccess) {
       
-      navigate("/"); // Redirect to the CSR orders page
+      navigate("/vendor-products"); // Redirect to the CSR orders page
     }
   };
 
