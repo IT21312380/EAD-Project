@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import './AllVendors.css';
 import AdminNavBar from "../../common/adminNavBar/AdminNavBar";
 
 function AllVendors() {
- 
   const [vendors, setVendors] = useState([]);
   const navigate = useNavigate(); // Initialize navigate
 
@@ -39,15 +37,24 @@ function AllVendors() {
             Add Vendor
           </button>
         </div>
-        <ul className="vendor-list">
-          {vendors.map((vendor) => (
-            <li key={vendor.id} className="vendor-item">
-              <p className="vendor-info"><strong>Vendor Id:</strong> {vendor.vendorId}</p>
-              <p className="vendor-info"><strong>Email:</strong> {vendor.email}</p>
-              <p className="vendor-info"><strong>Username:</strong> {vendor.username}</p>
-            </li>
-          ))}
-        </ul>
+        <table className="vendor-list-table">
+          <thead >
+            <tr>
+              <th className="vendor-list-header">Vendor ID</th>
+              <th className="vendor-list-header">Email</th>
+              <th className="vendor-list-header">Username</th>
+            </tr>
+          </thead>
+          <tbody>
+            {vendors.map((vendor) => (
+              <tr key={vendor.id} className="vendor-item-row">
+                <td>{vendor.vendorId}</td>
+                <td>{vendor.email}</td>
+                <td>{vendor.username}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

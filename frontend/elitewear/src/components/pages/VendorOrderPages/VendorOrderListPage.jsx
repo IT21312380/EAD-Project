@@ -14,7 +14,12 @@ const VendorOrderListPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [categories, setCategories] = useState([]);
 
-  const currentUserId = "1234"; // This should ideally come from user authentication context
+  //const currentUserId = "1234"; // This should ideally come from user authentication context
+
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+    const currentUserId = currentUser?.vendor?.vendorId;
+    console.log("current",currentUserId);
+   
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -116,13 +121,36 @@ const VendorOrderListPage = () => {
     <VendorNavBar/>
     <div className="vendor-order-container">
       <h2 className="vendor-order-title">Order List</h2>
-      <SearchAndFilter
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        categories={categories}
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-      />
+      
+        {/* Search and Filter section */}
+        <div className="search-filter-container">
+          {/* Search bar */}
+          <div className="search-bar">
+            <input
+              type="text"
+              placeholder="Search orders..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button>
+              <i className="fa fa-search"></i>
+            </button>
+          </div>
+
+          {/* Category dropdown */}
+          <select
+            className="category-dropdown"
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+          >
+            <option value="">All Categories</option>
+            {categories.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+        </div>
       {filteredOrders.length === 0 ? (
         <p className="vendor-order-empty">No orders found for this user.</p>
       ) : (
