@@ -66,7 +66,7 @@ const Footer = () => {
           <Col md={3} className="mt-5">
             <Nav className="flex-column fs-5 text-center">
               <h5>Powered By @BitBusters</h5>
-              <p>&copy; 2024 Your Company Name. All Rights Reserved.</p>
+              <p>&copy; 2024 Phantom Computers Inc. All Rights Reserved.</p>
             </Nav>
           </Col>
         </Row>
