@@ -3,7 +3,7 @@
     width: 100%;
     background-color: #07012d;
     padding: 10px 20px;
-    position: fixed;
+    position: relative;
     top: 0;
     left: 0;
     display: flex;
@@ -12,6 +12,7 @@
     z-index: 10;
     height: 90px;
     font-family: 'Poppins', sans-serif;
+    margin-bottom: 20px;
 }
 
 /* Title link */
@@ -19,6 +20,11 @@
     display: flex;
     align-items: center;
     text-decoration: none;
+}
+
+.vendor-logo{
+    width: 200px;
+    margin-bottom: 20px;
 }
 
 .vendor-title {

@@ -15,11 +15,8 @@ const AdminNavBar = () => {
 
     return (
         <nav className='admin-navbar'>
+            <img src="./Logo(3).png" alt="Company Logo" className='admin-logo' />
             
-            <Link to="/Home" className='admin-title-link'>
-                <h1 className='admin-title'>EliteWear</h1>
-                <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"></link>
-            </Link>
 
             <ul className='admin-nav-links'>
                 <li><button className='admin-nav-btn' onClick={() => navigate('/admin-products')}>Inventory</button></li>

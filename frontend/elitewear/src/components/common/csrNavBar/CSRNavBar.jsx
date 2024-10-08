@@ -16,10 +16,7 @@ const CSRNavBar = () => {
     return (
         <nav className='csr-navcontainer'>
             
-            <Link to="/Home" className='csr-title-link'>
-                <h1 className='csr-title' style={{ fontStyle: "'Press Start 2P','consolas','sans-serif'" }}>EliteWear</h1>
-                <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"></link>
-            </Link>
+            <img src="./Logo(3).png" alt="Company Logo" className='csr-logo' />
 
             <ul className='csr-nav-links'>
                 <li><button className='csr-nav-btn' onClick={() => navigate('/all-users')}>Users</button></li>
