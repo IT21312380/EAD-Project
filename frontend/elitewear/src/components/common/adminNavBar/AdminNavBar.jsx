@@ -1,36 +1,35 @@
-import React from 'react'
-import { Link } from "react-router-dom";
-import"./AdminNavBar.css"
+import React from 'react';
+import { Link, useNavigate } from "react-router-dom";
+import { useLogout } from "../../../hooks/useLogout";
+import "./AdminNavBar.css";
 
 const AdminNavBar = () => {
-    
+    const navigate = useNavigate(); // Initialize navigate
+    const { logout } = useLogout();
 
-    const handleClick = () =>
-        {
-          
-         
-        }
-      
+    const handleLogoutClick = () => {
+        logout();
+        console.log("logout");
+        navigate('/admin-login');
+    };
 
     return (
-        <nav className = 'navcontainer'>
-            <img src='' alt="" className='logo'/>
-            <Link to="/Home" className='title-link'>
-                <h1 className='title' style={{fontStyle:"'Press Start 2P','consolas','sans-serif'"}}>SPACEX</h1>
+        <nav className='admin-navbar'>
+            
+            <Link to="/Home" className='admin-title-link'>
+                <h1 className='admin-title'>EliteWear</h1>
                 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"></link>
             </Link>
 
-            <ul>
-                
-                <li><Link to=""><button className='btn'>Inventory</button></Link></li>
-                <li><Link to=""><button className='btn'>Users</button></Link></li>
-                <li><Link to=""><button className='btn'>Orders</button></Link></li>
-                <li><Link to=""><button className='btn' onClick={handleClick}>LOGOUT</button></Link></li>
-
-
+            <ul className='admin-nav-links'>
+                <li><button className='admin-nav-btn' onClick={() => navigate('/admin-products')}>Inventory</button></li>
+                <li><button className='admin-nav-btn' onClick={() => navigate('/all-users')}>Users</button></li>
+                <li><button className='admin-nav-btn' onClick={() => navigate('/csr-orders')}>Orders</button></li>
+                <li><button className='admin-nav-btn' onClick={() => navigate('/all-vendors')}>Vendors</button></li>
+                <li><button className='admin-logout-btn' onClick={handleLogoutClick}>LOGOUT</button></li>
             </ul>
         </nav>
-    )
-}
+    );
+};
 
-export default AdminNavBar
+export default AdminNavBar;

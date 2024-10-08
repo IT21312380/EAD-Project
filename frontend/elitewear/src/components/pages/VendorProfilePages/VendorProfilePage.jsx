@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../../../hooks/useAutContext";
 import "./VendorProfilePage.css";
+import VendorNavBar from "../../common/vendorNavBar/VendorNavBar";
 
 const VendorProfile = () => {
   const [User, setUser] = useState(null);
@@ -24,6 +25,8 @@ const VendorProfile = () => {
   }, [user]);
 
   return (
+    <div>
+    <VendorNavBar/>
     <div className="vendor-profile-container">
       <div className="vendor-profile-header">
         <h1 className="vendor-profile-title">
@@ -47,6 +50,7 @@ const VendorProfile = () => {
           <button className="vendor-profile-btn">My Reviews</button>
         </a>
       </div>
+    </div>
     </div>
   );
 };

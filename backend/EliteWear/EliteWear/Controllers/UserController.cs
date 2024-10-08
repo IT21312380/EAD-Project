@@ -55,6 +55,8 @@ public class UserController : ControllerBase
         return Ok(user);
     }
 
+
+
     [HttpGet]
     public async Task<IActionResult> GetProducts()
     {

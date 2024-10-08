@@ -69,9 +69,11 @@ const AdminProductPage = () => {
 
   return (
     <div>
-      <AdminNavBar />
-      <div className="admin-product-page">
-        <h2>Admin Inventory</h2>
+
+    <AdminNavBar/>
+    <div className="admin-product-page">
+      
+
 
         {/* Search Bar */}
         <input
