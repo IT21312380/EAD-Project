@@ -19,15 +19,17 @@ import CSROrderList from "./components/pages/CSROrderPages/CSROrderList";
 import CSRNotificationList from "./components/pages/CSRNotificationPages/CSRNotificationList";
 import VendorNotifications from "./components/pages/VendorNotificationsPages/VendorNotifications";
 import AdminProductPage from "./components/pages/AdminProductPages/AdminProductPage";
+import WelcomePage from "./components/pages/WelcomePage/WelcomePage";
 
 function App() {
   const { user } = useAuthContext();
   return (
     <Router>
       <Routes>
+      <Route path="/" element={<WelcomePage />} />
         <Route path="/add-product" element={<CreateProduct />} />
         <Route path="/all-vendors" element={<AllVendors />} />
-        <Route path="/" element={<VendorProducts />} />
+        <Route path="/vendor-products" element={<VendorProducts />} />
         <Route path="/vendor-login" element={<VendorLogin />} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/admin-products" element={<AdminProductPage />} />

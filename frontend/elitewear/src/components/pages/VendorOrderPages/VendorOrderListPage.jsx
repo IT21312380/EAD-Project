@@ -14,7 +14,12 @@ const VendorOrderListPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [categories, setCategories] = useState([]);
 
-  const currentUserId = "1234"; // This should ideally come from user authentication context
+  //const currentUserId = "1234"; // This should ideally come from user authentication context
+
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+    const currentUserId = currentUser?.vendor?.vendorId;
+    console.log("current",currentUserId);
+   
 
   useEffect(() => {
     const fetchOrders = async () => {

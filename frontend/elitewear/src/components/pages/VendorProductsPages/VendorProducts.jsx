@@ -72,6 +72,9 @@ const VendorProducts = () => {
       : true;
     return matchesVendorId && matchesSearchQuery && matchesCategory;
   });
+  const handleAddProduct = () => {
+    navigate("/add-product");
+  };
 
   return (
     <div>
@@ -99,12 +102,13 @@ const VendorProducts = () => {
           </option>
         ))}
       </select>
+      <button onClick={handleAddProduct}>Add Product</button>
 
       {filteredProducts.length === 0 ? (
         <p className="vendor-products-empty">
           No products found for this user.
         </p>
-      ) : (
+        ) : (
         <ul className="vendor-products-list">
           {filteredProducts.map((product) => (
             <li key={product.id} className="vendor-product-item">
