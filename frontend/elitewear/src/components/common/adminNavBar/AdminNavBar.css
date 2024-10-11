@@ -49,14 +49,14 @@
     padding: 10px 24px;
     margin-left: 10px;
     margin-right: 10px;
-    color: #fff; /* Text is white by default */
-    background-color: transparent; /* No background initially */
-    border: none; /* No border */
+    color: #fff; 
+    background-color: transparent;
+    border: none; 
     font-size: 16px;
     cursor: pointer;
     font-family: 'Poppins', sans-serif;
-    font-weight: bold; /* Bold text by default */
-    position: relative; /* Needed for underline effect */
+    font-weight: bold; 
+    position: relative; 
     transition: color 0.3s ease-in-out;
 }
 
@@ -72,36 +72,36 @@
     height: 2px;
     bottom: -2px;
     left: 0;
-    background-color: #00ffff; /* Cyan underline */
-    transition: width 0.3s ease-in-out; /* Smooth underline effect */
+    background-color: #00ffff;
+    transition: width 0.3s ease-in-out; 
 }
 
 .admin-nav-btn:hover::after {
-    width: 100%; /* Expands underline */
+    width: 100%; 
 }
 
-/* Hover effect: only color change, no shadow */
+
 .admin-nav-btn:hover {
-    color: #f5f8f8; /* Cyan text color on hover */
+    color: #f5f8f8; 
 }
 
 /* Logout button specific style */
 .admin-logout-btn {
-    color: #e63946; /* Red text for logout by default */
-    background-color: transparent; /* Ensure no background */
-    border: none; /* Ensure no border */
-    padding: 10px 0; /* Similar padding to other buttons */
+    color: #e63946; 
+    background-color: transparent; 
+    border: none; 
+    padding: 10px 0; 
     font-size: 16px;
     cursor: pointer;
     font-family: 'Poppins', sans-serif;
     font-weight: bold;
-    position: relative; /* For underline effect */
+    position: relative; 
     transition: color 0.3s ease-in-out;
 }
 
 /* Hover effect for logout button */
 .admin-logout-btn:hover {
-    color: #fff; /* Change to white text on hover */
+    color: #fff; 
 }
 
 /* Underline effect for logout button */
@@ -112,8 +112,8 @@
     height: 2px;
     bottom: -2px;
     left: 0;
-    background-color: #e63946; /* Red underline for logout */
-    transition: width 0.3s ease-in-out; /* Smooth underline effect */
+    background-color: #e63946; 
+    transition: width 0.3s ease-in-out; 
 }
 
 .admin-logout-btn:hover::after {

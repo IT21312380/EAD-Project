@@ -3,6 +3,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: url('../../../assets/flat-design-with-headphones-and-laptop-illustration-ai-generative-free-photo.jpg'); /* Update with the correct path */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   height: 100vh;
   background-color: #f4f4f9;
 }
@@ -98,3 +102,4 @@
     font-size: 14px;
   }
 }
+

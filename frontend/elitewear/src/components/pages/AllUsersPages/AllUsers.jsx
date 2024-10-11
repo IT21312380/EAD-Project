@@ -5,6 +5,7 @@ import './AllUsers.css';
 import AdminNavBar from "../../common/adminNavBar/AdminNavBar";
 import CSRNavBar from "../../common/csrNavBar/CSRNavBar"; // Import CSR NavBar
 import { getUserRole } from "../../../hooks/useRoles"; // Import the global state
+import Footer from "../../common/footer/Footer";
 
 function AllUsers() {
   const { user } = useAuthContext();
@@ -103,6 +104,7 @@ function AllUsers() {
           </tbody>
         </table>
       </div>
+      <Footer />
     </div>
   );
 }

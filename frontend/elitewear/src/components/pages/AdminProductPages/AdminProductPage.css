@@ -118,3 +118,14 @@
   color: green;
   font-weight: bold;
 }
+
+.button-group {
+  display: inline-block;
+  text-align: center;
+  padding: 10px;
+}
+
+.button-group .btn {
+  display: inline-block;
+  margin-right: 10px; /* Adds space between the buttons */
+}

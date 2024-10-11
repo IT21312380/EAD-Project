@@ -144,19 +144,23 @@ const AdminProductPage = () => {
                     Status: <span>{product.status}</span>
                   </p>
 
-                  <button
-                    className="btn btn-danger delete-btn"
-                    onClick={() => handleDelete(product.id)}
-                  >
-                    Delete
-                  </button>
-                  <button
-                    className="btn btn-success activate-btn"
-                    onClick={() => handleActivate(product.id)}
-                    disabled={product.status === "Active"}
-                  >
-                    {product.status === "Active" ? "Activated" : "Activate"}
-                  </button>
+                  <div className="button-group">
+  <button
+    className="btn btn-danger delete-btn"
+    onClick={() => handleDelete(product.id)}
+  >
+    Delete
+  </button>
+  <br/><br/>
+  <button
+    className="btn btn-success activate-btn"
+    onClick={() => handleActivate(product.id)}
+    disabled={product.status === "Active"}
+  >
+    {product.status === "Active" ? "Activated" : "Activate"}
+  </button>
+</div>
+
                 </div>
               </div>
             ))}
